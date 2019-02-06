@@ -1,0 +1,29 @@
+<mat-card>
+  <h1>Contacts</h1>
+</mat-card>
+<mat-card>
+  <h2>Add new contact</h2>
+  <mat-form-field>
+    <input matInput [formControl]="name" placeholder="Name">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [formControl]="wallet" placeholder="WalletAddress">
+  </mat-form-field>
+  <button mat-button disabled *ngIf="!((name.value) && (wallet.value))">Save</button>
+  <button mat-button *ngIf="((name.value) && (wallet.value))" (click)="cs.addNewContact(name.value, wallet.value); name.reset(); wallet.reset()">Save</button>
+</mat-card>
+<mat-card>
+  <h2>Your contacts</h2>
+  <mat-list>
+    <ng-template let-contact ngFor [ngForOf]="cs.contacts">
+      <mat-list-item>
+        <avatar [name]="contact.name" [displayType]="'circle'" [size]="50"></avatar>
+        <h4 mat-line>{{contact.name}}</h4>
+        <p mat-line>{{contact.wallet}}</p>
+        <button mat-icon-button (click)="cs.removeContact(contact.wallet)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </ng-template>
+  </mat-list>
+</mat-card>

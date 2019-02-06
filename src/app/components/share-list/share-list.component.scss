@@ -1,0 +1,29 @@
+.share-icon {
+    color: grey;
+    width: 32px;
+}
+.indicator {
+    position: absolute;
+    right: 5px;
+}
+
+.selected-share {
+    font-weight: bold;
+}
+.mat-expansion-indicator {
+    position: absolute;
+    left: 15px;
+}
+
+.baffle {
+    font: 15px arial, sans-serif;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+// mat-panel-title {
+//     flex-basis: 0;
+// }
+// mat-panel-description {
+//     flex-basis: 100%;
+// }

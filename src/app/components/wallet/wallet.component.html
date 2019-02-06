@@ -1,0 +1,55 @@
+<mat-sidenav-container fullscreen>
+  <div class="wallet-container" flex="50" layout="row" layout-align="center">
+    <mat-card flex="50">
+      <div mat-dialog-content>
+        <div class="sharu-logo-container">
+          <img mat-card-image src="assets/logo1.png" alt="SHARU" class="sharu-logo"><br />
+        </div>
+        <h3>Welcome!</h3>
+
+        <div *ngIf="mode === modes.view">
+          <button *ngIf="walletAvailable" mat-button (click)="mode = modes.unlock">Unlock wallet</button>
+          <button mat-button (click)="mode = modes.generate">Create new wallet</button>
+          <button mat-button (click)="mode = modes.restore">Restore wallet</button>
+        </div>
+
+        <div *ngIf="mode === modes.unlock">
+          <mat-form-field>
+            <input matInput placeholder="Password" type="password" [formControl]="password" (keydown.enter)="unlockWallet(password.value)">
+          </mat-form-field>
+          <button mat-button *ngIf="this.isPasswordSet()" (click)="unlockWallet(password.value)">Unlock wallet with password</button>
+          <button mat-button *ngIf="!this.isPasswordSet()" disabled >Unlock wallet with password</button>
+        </div>
+
+        <div *ngIf="mode === modes.generate">
+          <mat-form-field>
+            <input matInput placeholder="Password" type="password" [formControl]="password">
+          </mat-form-field>
+          <button mat-button *ngIf="this.isPasswordSet()" (click)="createNewWallet(password.value)">Create new wallet with password</button>
+          <button mat-button *ngIf="!this.isPasswordSet()" disabled>Create new wallet with password</button>
+        </div>
+
+        <div *ngIf="mode === modes.restore">
+          <mat-form-field>
+            <input matInput placeholder="Password" type="password" [formControl]="password">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Mnemonic" [formControl]="mnemonic">
+          </mat-form-field>
+          <button mat-button *ngIf="this.isPasswordSet()" (click)="restoreWalletFromMnemonic(password.value, mnemonic.value)">Restore wallet</button>
+          <button mat-button *ngIf="!this.isPasswordSet()" disabled>Restore wallet</button>
+        </div>
+
+      </div>
+    </mat-card>
+    <mat-card *ngIf="(errorStatus)">
+      <p>
+        <font color="red">{{errorStatus}}</font>
+      </p>
+    </mat-card>
+    <mat-card>
+
+        version fingerprint - {{gitHash}}
+    </mat-card>
+  </div>
+</mat-sidenav-container>

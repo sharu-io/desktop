@@ -1,0 +1,30 @@
+<mat-card>
+  <h1>Public key and mnemonic</h1>
+</mat-card>
+<mat-card>
+  <h2>Your wallet address</h2>
+  If someone wants to share something with you: give out your wallet-address:
+  <mat-nav-list>
+    <mat-list-item (click)="copyPubkeyToClipboard()">
+      <mat-icon mat-list-icon>vpn_key</mat-icon>
+      <h4 mat-line>{{eth.getAddress()}}</h4>
+      <p mat-line>(click to copy to clipboard)</p>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-card>
+<mat-card>
+  <h2>Mnemonic</h2>
+  If you want to use sharu on a different computer you need the mnemonic to restore your account there. For security
+  reasons you need to re-enter your password here to retrieve the mnemonic:
+  <form class="mnemonic-form">
+    <mat-form-field>
+      <input type="password" name="password" matInput placeholder="Wallet password" [formControl]="password">
+    </mat-form-field>
+    <button *ngIf="(mnemonic === null) || (mnemonic === undefined) || (mnemonic.length === 0)" mat-button (click)="revealMnemonic()">show me the mnemonic plz</button>
+    <button *ngIf="(mnemonic !== null) && (mnemonic !== undefined) && (mnemonic.length > 0)" mat-button (click)="password.value = null; mnemonic = null">hide mnemonic</button>
+  </form>
+  <div *ngIf="(mnemonic !== undefined) && (mnemonic !== null) && (mnemonic.length > 0)">
+    <h4>Your mnemonic</h4>
+    {{mnemonic}}
+  </div>
+</mat-card>

@@ -1,0 +1,85 @@
+<p-toast position="bottom-right" key="invite">
+  <ng-template let-message pTemplate="message">
+
+    <h3 mat-line>You got a new invite!</h3>
+
+    <h4 mat-line>share:</h4>
+    <p mat-line>
+      <div>
+        <span *ngIf="invites.pointerNames[message.data.pointer]">
+          {{invites.pointerNames[message.data['pointer']]}}
+        </span>
+        <span *ngIf="!(invites.pointerNames[message.data.pointer])">
+          sharename not resolved yet
+        </span>
+        <span *ngIf="invites.pointerNames[message.data.pointer] && invites.pointerHashes[message.data.pointer]">
+          - </span>
+        <span *ngIf="invites.pointerHashes[message.data.pointer]">
+          {{invites.pointerHashes[message.data['pointer']]}}
+        </span>
+      </div>
+
+      <h4 mat-line>sender:</h4>
+      <p mat-line>
+        <avatar *ngIf="contacts.walletsToNames[message.data.sender]" matTooltip="{{contacts.walletsToNames[message.data.sender]}}"
+          [name]="contacts.walletsToNames[message.data.sender]" [displayType]="'circle'" [size]="30">
+        </avatar>
+        <mat-list-item>
+          {{message.data['sender']}}
+        </mat-list-item>
+      </p>
+      <p mat-line>
+        <button mat-button (click)="invites.processInvite(message.data.pointer, true); messageService.clear(invite)">
+          <mat-icon>done</mat-icon>
+        </button>
+        <button mat-button (click)="invites.processInvite(message.data.pointer, false);  messageService.clear(invite)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </p>
+
+
+  </ng-template>
+</p-toast>
+
+
+
+<p-toast position="top-center"></p-toast>
+<mat-sidenav-container fullscreen>
+  <mat-sidenav class="sidenav" opened mode="side" disableClose="true">
+    <mat-sidenav-container style="height:100%;">
+      <mat-sidenav class="nav-bar" opened mode="side">
+        <button *ngIf="!(ngxElectron.isElectronApp)" mat-icon-button (click)="sbs.select('settings'); sidebar.toggle()">
+          <mat-icon>settings</mat-icon>
+        </button>
+        <button mat-icon-button (click)="sbs.select('contacts'); sidebar.toggle()">
+          <mat-icon>contacts</mat-icon>
+        </button>
+        <button mat-icon-button (click)="sbs.select('jobs'); sidebar.toggle()">
+          <mat-icon *ngIf="jobs.jobs.length > 0" matBadge="{{jobs.jobs.length}}">view_headline</mat-icon>
+          <mat-icon *ngIf="jobs.jobs.length === 0">view_headline</mat-icon>
+        </button>
+        <button mat-icon-button (click)="sbs.select('mnemonic'); sidebar.toggle()">
+          <mat-icon>vpn_key</mat-icon>
+        </button>
+        <button mat-icon-button (click)="sbs.select('invites'); sidebar.toggle()">
+          <mat-icon *ngIf="invites.openInvites.length === 0">bookmark_border</mat-icon>
+          <mat-icon *ngIf="invites.openInvites.length > 0" matBadge="{{invites.openInvites.length}}">bookmark_border</mat-icon>
+        </button>
+        <button mat-icon-button (click)="sbs.select('statistics'); sidebar.toggle()">
+          <mat-icon>show_chart</mat-icon>
+        </button>
+        <button mat-icon-button (click)="openElectronMailTo()">
+          <mat-icon>feedback</mat-icon>
+        </button>
+      </mat-sidenav>
+      <share-list [selected]="selectedShare"></share-list>
+    </mat-sidenav-container>
+  </mat-sidenav>
+  <share-content [selected]="selectedItem" [fromShare]="selectedShare"></share-content>
+  <mat-sidenav class="sidebar-sidenav" #sidebar closed mode="over" position="end">
+    <button mat-icon-button (click)="sidebar.toggle()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <sidebar></sidebar>
+  </mat-sidenav>
+</mat-sidenav-container>

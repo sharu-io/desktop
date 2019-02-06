@@ -1,0 +1,13 @@
+<mat-card>
+    <h1>Settings</h1>
+</mat-card>
+<mat-card>
+  <h2>IPFS Server</h2>
+  <mat-form-field>
+    <input matInput [formControl]="server" placeholder="Server">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [formControl]="port" placeholder="Port">
+  </mat-form-field>
+  <button mat-button (click)="save(server.value,port.value)">Save</button>
+</mat-card>

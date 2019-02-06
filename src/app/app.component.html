@@ -1,0 +1,17 @@
+<router-outlet></router-outlet>
+
+<div *ngIf="!licenseStatus">
+  <licence></licence>
+</div>
+
+<div *ngIf="licenseStatus">
+  <div *ngIf="!walletInitialized">
+    <wallet></wallet>
+  </div>
+</div>
+
+<p-blockUI [blocked]="blocked">
+  <div class="sharu-progress-container">
+    <p-progressSpinner class="sharu-progress"></p-progressSpinner>
+  </div>
+</p-blockUI>

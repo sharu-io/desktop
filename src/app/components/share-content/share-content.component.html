@@ -1,0 +1,90 @@
+<div class="sharu-logo-container" *ngIf="(!selected)">
+  <h1>Welcome to sharu!</h1>
+  <img class="sharu-logo" src="assets/logo3.png" alt="sharu" />
+</div>
+
+<div *ngIf="(selected)" class="content" fileDnd [selectedNode]="selected">
+  <mat-card>
+    <h1>{{this.selected.label}}</h1>
+    <div>
+      <ng-template let-crumb ngFor [ngForOf]="ss.breadcrumb">
+        <span *ngIf="crumb.parent == null">
+          <!-- root:  -->
+          <a [routerLink]="['/share', crumb.hash]">{{crumb.label}}</a>
+        </span>
+        <span *ngIf="crumb.parent != null && (crumb.localPath === undefined || crumb.localPath === null)">
+          <!-- remote:  -->
+          <a [routerLink]="['/share', fromShare.hash, crumb.hash]">{{crumb.label}}</a>
+        </span>
+        <span *ngIf="crumb.parent != null &&  crumb.localPath !== undefined && crumb.localPath !== null">
+          <!-- local:  -->
+          <a [routerLink]="['/local', fromShare.hash, crumb.localPath]">{{crumb.label}}</a>
+        </span>
+        /
+      </ng-template>
+    </div>
+    <div *ngIf="this.selected.owned">
+      <div *ngIf="this.selected.local">
+        <mat-form-field>
+          <input matInput placeholder="Folder name" [formControl]="newFolderControl">
+        </mat-form-field>
+        <button *ngIf="this.isFolderNameValid()" mat-icon-button (click)="ss.createFolder(newFolderControl.value, selected); newFolderControl.reset()">
+          <mat-icon>create_new_folder</mat-icon>
+        </button>
+        <button *ngIf="!this.isFolderNameValid()" mat-icon-button disabled>
+          <mat-icon>create_new_folder</mat-icon>
+        </button>
+        <button mat-button (click)="uploadWebDialog(); upload();">
+          Upload file
+        </button>
+      </div>
+    </div>
+  </mat-card>
+  <mat-card>
+    <mat-list>
+      <ng-template let-item let-last="last" ngFor [ngForOf]="ss.children">
+        <mat-list-item>
+          <mat-icon class="icon-container">{{item.icon.name}}</mat-icon>
+          <a *ngIf="!item.leaf && (item.localPath === undefined || item.localPath === null)" [routerLink]="['/share', fromShare.hash, item.hash]">{{item.label}}
+          </a>
+          <a *ngIf="!item.leaf && (item.localPath !== undefined && item.localPath !== null)" [routerLink]="['/local', fromShare.hash, item.localPath]">{{item.label}}
+          </a>
+          <div *ngIf="item.leaf">
+            {{item.label}}
+          </div>
+          <button class="file-menu" *ngIf="this.item2delete === null" mat-icon-button [matMenuTriggerFor]="menu"
+            xPosition="after">
+            <mat-icon class="file-menu-icon">more_horiz</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button *ngIf="item.leaf" mat-menu-item (click)="downloadFile(item)">
+              <mat-icon>get_app</mat-icon>
+              <span>Download</span>
+            </button>
+            <button *ngIf="!item.leaf" mat-menu-item disabled>
+              <mat-icon>get_app</mat-icon>
+              <span>Download</span>
+            </button>
+            <button *ngIf="item.owned" mat-menu-item (click)="this.item2delete = item">
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+            <button *ngIf="!item.owned" mat-menu-item disabled>
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </mat-menu>
+          <button *ngIf="item.owned && this.item2delete === item" mat-button color="warn" (click)="ss.deleteFile(item); this.item2delete = null">
+            Delete permanently
+          </button>
+          <button *ngIf="item.owned && this.item2delete === item" mat-button (click)="this.item2delete = null">
+            Cancel
+          </button>
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </ng-template>
+    </mat-list>
+  </mat-card>
+</div>
+
+<input #file style="display:none" type="file" (change)="upload()">

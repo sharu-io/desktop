@@ -1,0 +1,33 @@
+<mat-card>
+  <h1>Open invites</h1>
+</mat-card>
+<mat-card>
+  <mat-list>
+    <ng-template let-invite let-last="last" ngFor [ngForOf]="invites.openInvites">
+      <mat-list-item>
+        <h4 mat-line>{{invites.pointerNames[invite]}}</h4>
+        <p mat-line>{{invites.pointerHashes[invite]}}</p>
+        <button mat-icon-button (click)="invites.processInvite(invite, true)">
+          <mat-icon>done</mat-icon>
+        </button>
+        <button mat-icon-button (click)="invites.processInvite(invite, false)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </mat-list-item>
+    </ng-template>
+  </mat-list>
+</mat-card>
+<mat-card>
+  <h2>Dismissed invites</h2>
+  <mat-list>
+    <ng-template let-dismissedInvite let-last="last" ngFor [ngForOf]="invites.dismissedInvites">
+      <mat-list-item>
+        <h4 mat-line>{{invites.pointerNames[dismissedInvite]}}</h4>
+        <p mat-line>{{invites.pointerHashes[dismissedInvite]}}</p>
+        <button mat-icon-button (click)="invites.processInvite(dismissedInvite, true)">
+          <mat-icon>done</mat-icon>
+        </button>
+      </mat-list-item>
+    </ng-template>
+  </mat-list>
+</mat-card>

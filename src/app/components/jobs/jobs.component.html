@@ -1,0 +1,12 @@
+<mat-card>
+  <h1>Long running activities</h1>
+</mat-card>
+<mat-list>
+  <ng-template let-job let-last="last" ngFor [ngForOf]="jobs.jobs">
+    <mat-list-item>
+      <mat-icon mat-list-icon>{{job.icon}}</mat-icon>
+      <h4 mat-line>{{job.name}}</h4>
+      <p mat-line>{{job.currentActivity}}</p>
+    </mat-list-item>
+  </ng-template>
+</mat-list>

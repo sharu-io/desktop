@@ -1,0 +1,43 @@
+{
+  "productName": "sharu",
+  "directories": {
+    "output": "release/"
+  },
+  "files": [
+    "**/*",
+    "!*.ts",
+    "!*.code-workspace",
+    "!LICENSE.md",
+    "!package.json",
+    "!package-lock.json",
+    "!src/",
+    "!e2e/",
+    "!hooks/",
+    "!.angular-cli.json",
+    "!_config.yml",
+    "!karma.conf.js",
+    "!tsconfig.json",
+    "!tslint.json"
+  ],
+  "win": {
+    "asar": { "smartUnpack": true },
+    "icon": "dist/assets",
+    "target": [
+      "portable"
+    ]
+  },
+  "mac": {
+    "asar": { "smartUnpack": true },
+    "icon": "dist/assets",
+    "target": [
+      "dmg"
+    ]
+  },
+  "linux": {
+    "asar": { "smartUnpack": true },
+    "icon": "dist/assets",
+    "target": [
+      "AppImage"
+    ]
+  }
+}

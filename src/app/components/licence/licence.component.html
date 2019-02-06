@@ -1,0 +1,26 @@
+<mat-sidenav-container fullscreen>
+  <div class="wallet-container" flex="50" layout="row" layout-align="center">
+    <mat-card flex="50">
+      <div mat-dialog-content>
+        <div class="sharu-logo-container">
+          <img mat-card-image style="width: 70px" src="assets/logo1.png" alt="SHARU"><br />
+        </div>
+        <h3>Welcome!</h3>
+        <h5>First things first! Please read and accept our disclaimer.</h5>
+        <div>
+          <textarea style="background-color: #303030" style="width: 50%; min-width: 300px; height: 200px" disabled>
+This software is considered "beta". Shared files may be inaccessible in the future and/or with new updates. Do not depend on it! 
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+</textarea>
+        </div>
+        <div>
+          <button mat-raised-button (click)="licence.accept()">Sounds great, I accept!</button>
+        </div>
+      </div>
+    </mat-card>
+    <mat-card>
+      version fingerprint - {{gitHash}}
+    </mat-card>
+  </div>
+</mat-sidenav-container>

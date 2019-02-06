@@ -1,0 +1,121 @@
+<mat-card>
+    <h1>Your shares</h1>
+    <mat-form-field>
+        <input matInput placeholder="New share name" [formControl]="newShareControl">
+    </mat-form-field>
+    <button *ngIf="this.isShareNameValid()" mat-button (click)="ss.createShare(newShareControl.value); newShareControl.reset()">Create
+        share</button>
+    <button *ngIf="!this.isShareNameValid()" mat-button disabled>Create share</button>
+</mat-card>
+<mat-accordion>
+    <ng-template let-item let-last="last" ngFor [ngForOf]="ss.shares">
+        <mat-expansion-panel [expanded]="item === selected" hideToggle (opened)="focusOn(item)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon class="share-icon" matTooltip="{{item.iconOwned.description}}">{{item.iconOwned.name}}</mat-icon>
+                    <div *ngIf="item.resolved === undefined || item.resolved === false">
+                        <span class="baffle">{{item.label}}</span>
+                    </div>
+                    <div *ngIf="item.resolved && item === selected">
+                        <a class="selected-share" [routerLink]="['/share', item.hash]">
+                            {{item.label}}
+                        </a>
+                    </div>
+                    <div *ngIf="item.resolved && item !== selected">
+                        <a [routerLink]="['/share', item.hash]">
+                            {{item.label}}
+                        </a>
+                    </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                    <mat-icon class="indicator" *ngIf="(item.iconLocation)" matTooltip="{{item.iconLocation.description}}">{{item.iconLocation.name}}</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div *ngIf="item.owned !== true">
+                <h3>Shared by</h3>
+                <avatar *ngIf="cs.walletsToNames[shareOwner] !== undefined" matTooltip="{{cs.walletsToNames[shareOwner]}}"
+                    [name]="cs.walletsToNames[shareOwner]" [displayType]="'circle'" [size]="30"></avatar>
+                <mat-list-item *ngIf="cs.walletsToNames[shareOwner] === undefined">
+                    <h4 mat-line>{{shareOwner}}</h4>
+                </mat-list-item>
+                <button mat-button (click)="this.invite.dismissInvite(item.pointer)">
+                    Remove share
+                </button>
+                <button mat-button (click)="this.openGatewayIo(item.hash)">
+                    show raw folder
+                </button>
+                <button mat-button (click)="this.copyHashToClipBoard(item.hash)">
+                    copy hash
+                </button>
+            </div>
+            <div *ngIf="item.owned === true">
+                <div *ngIf="!item.local">
+                    This share was created on a different sharu-installation. Currently sharu does not support managing
+                    a share through multiple clients. Sorry about this, we will change this in the next release ;-)
+                    Read-operations like browsing and downloading are still supported though.
+                </div>
+                <div *ngIf="item.local">
+                    <mat-form-field>
+                        <input matInput [formControl]="receiversControl" placeholder="Address of receiver"
+                            [matAutocomplete]="knownWallets" />
+                    </mat-form-field>
+
+                    <mat-autocomplete #knownWallets="matAutocomplete" [displayWith]="displayFn">
+                        <mat-option *ngFor="let contact of filteredReceivers | async " [value]="contact">
+                            {{contact.name}} ({{contact.wallet}})
+                        </mat-option>
+                    </mat-autocomplete>
+
+                    <button mat-button (click)="this.shareWith(item) && receiver = ''">
+                        Add receiver
+                    </button>
+                    <h3>Shared with</h3>
+                    <ng-template let-receiver let-last="last" ngFor [ngForOf]="knownShareReceivers">
+                        <avatar (click)="revokeShare(item, receiver)" matTooltip="{{cs.walletsToNames[receiver]}} (click to revoke)"
+                            [name]="cs.walletsToNames[receiver]" [displayType]="'circle'" [size]="30"></avatar>
+                    </ng-template>
+                    <mat-list>
+                        <ng-template let-receiver let-last="last" ngFor [ngForOf]="unknownShareReceivers">
+                            <mat-list-item>
+                                <h4 mat-line *ngIf="cs.walletsToNames[receiver] === undefined">{{receiver}}</h4>
+                                <button mat-icon-button (click)="revokeShare(item, receiver)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </mat-list-item>
+                        </ng-template>
+                    </mat-list>
+                    <button *ngIf="this.item2delete === null" mat-button color="warn" (click)="this.item2delete = item">
+                        Delete share
+                    </button>
+                    <button *ngIf="this.item2delete === item" mat-button color="warn" (click)="ss.deleteShare(item); this.item2delete = null">
+                        Delete permanently
+                    </button>
+                    <button *ngIf="this.item2delete === item" mat-button (click)="this.item2delete = null">
+                        Cancel
+                    </button>
+
+                    <button mat-button (click)="this.openGatewayIo(item.hash)">
+                        show raw folder
+                    </button>
+                    <button mat-button (click)="this.copyHashToClipBoard(item.hash)">
+                        copy hash
+                    </button>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </ng-template>
+</mat-accordion>
+<mat-card *ngIf="ss.shares.length === 0">
+    <div>
+
+        Welcome! you have no own shares and also have nothing received so far.
+    </div>
+    <div>
+
+        Start sharing!
+    </div>
+</mat-card>
+
+<mat-card style="position: sticky; bottom: 0; left: 0">
+    version fingerprint:<br /> {{gitHash}}
+</mat-card>
