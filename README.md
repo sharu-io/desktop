@@ -10,5 +10,5 @@ bring back the u to filesharing
 - [windows](https://gateway.ipfs.io/ipfs/QmbSafe3bguDxkd7ApJws8nfDswRT3TJHaFvdWpmEpnJyg/sharu-0.1.3.exe)
 
 # troubleshooting
-- in case you receive a "socket hangup", just restart the app
+- in case you receive a "socket hangup" on downloading, just restart the app - looks like the streaming between the app and ipfsd has still some issues. could happen that the download is already finished
 
