@@ -56,9 +56,9 @@ export class EthShareService {
         });
     }
 
-    public async updateHash(pointer: BigNumber, oldHash: string, newHash: string): Promise<Transaction> {
+    public async updateHash(pointer: BigNumber, oldHash: string, newHash: string): Promise<void> {
         return await this.mutexify('updateHash', async () => {
-            return await this.contract.updateHash(pointer, oldHash, newHash);
+            await (await this.contract.updateHash(pointer, oldHash, newHash)).wait();
         });
     }
 
