@@ -15,4 +15,7 @@ export class ToastService {
     notify(severity: Severities, summary: string, detail: string, target?: Targets, data?: any) {
         this.toasts.next({ severity, summary, detail, key: (target) ? target : undefined, data });
     }
+    notifySticky(severity: Severities, summary: string, detail: string, target?: Targets, data?: any) {
+        this.toasts.next({ severity, summary, detail, sticky: true, key: (target) ? target : undefined, data });
+    }
 }
