@@ -434,13 +434,12 @@ export class ShareService {
         await this.file.shareWith(share, receiver);
         await this.downwardsHashUpdate(share);
 
-        // publish new receiver and hash in chain
         await this.eth.shareContract.updateHash(share.pointer, oldHash, share.hash);
+        await this.eth.shareContract.invite(share.pointer, receiver);
 
         this.shareReceivers.get(share).push(receiver);
         this.newReceiversCalculated.next(share);
 
-        await this.eth.shareContract.invite(share.pointer, receiver);
     }
 
     public async revokeShare(share: TreeNodeItem, receiver: string) {
