@@ -6,6 +6,8 @@ bring back the u to filesharing
 
 # Changelog
 
+## v 0.1.4
+- fixed [nounce has already been used](https://github.com/sharu-io/desktop/issues/12)
 ## v 0.1.3
 
 - switching back to js-ipfs
