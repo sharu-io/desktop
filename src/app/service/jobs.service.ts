@@ -26,6 +26,10 @@ export abstract class JobItem<T> {
         this.toastService = toastService;
     };
 
+    protected showWarning(toast: ToastService, job: JobItem<any>, error){
+        toast.notify('warn', `${this.print()} failed, retrying`, `error was: ${error}`);
+    }
+
     constructor(type: string, name: string, icon: string){
         this.type = type;
         this.name = name;
@@ -56,7 +60,7 @@ export class IpfsLsJob extends JobItem<TreeNodeItem[]> {
             return list;
         } catch (e) {
             if (this.retries > 0) {
-                showWarning(this.toastService, this, e);
+                this.showWarning(this.toastService, this, e);
                 console.log(`... retrying ${this.print()} one more time (remaining retries: ${this.retries})`);
                 this.retries -= 1;
                 return this.start();
@@ -91,7 +95,7 @@ export class IpfsCatJob extends JobItem<any> {
             return data;
         } catch (e) {
             if (this.retries > 0) {
-                showWarning(this.toastService, this, e);
+                this.showWarning(this.toastService, this, e);
                 console.log(`... retrying ${this.print()} one more time (remaining retries: ${this.retries})`);
                 this.retries -= 1;
                 return this.start();
@@ -131,7 +135,7 @@ export class DownloadJob extends JobItem<IpfsFile> {
             return decrypted;
         } catch (e) {
             if (this.retries > 0) {
-                showWarning(this.toastService, this, e);
+                this.showWarning(this.toastService, this, e);
                 console.log(`... retrying ${this.print()} one more time (remaining retries: ${this.retries})`);
                 this.retries -= 1;
                 return this.start();
@@ -173,7 +177,7 @@ export class UploadJob extends JobItem<void> {
             this.isResolved = true;
         } catch (e) {
             if (this.retries > 0) {
-                showWarning(this.toastService, this, e);
+                this.showWarning(this.toastService, this, e);
                 console.log(`... retrying ${this.print()} one more time (remaining retries: ${this.retries})`);
                 this.retries -= 1;
                 return this.start();
@@ -208,7 +212,7 @@ export class DownloadStreamedJob extends JobItem<void> {
             this.isResolved = true;
         } catch (e) {
             if (this.retries > 0) {
-                showWarning(this.toastService, this, e);
+                this.showWarning(this.toastService, this, e);
                 console.log(`... retrying ${this.print()} one more time (remaining retries: ${this.retries})`);
                 this.retries -= 1;
                 return this.start();
@@ -254,7 +258,7 @@ export class UploadStreamedJob extends JobItem<void> {
             this.isResolved = true;
         } catch (e) {
             if (this.retries > 0) {
-                showWarning(this.toastService, this, e);
+                this.showWarning(this.toastService, this, e);
                 console.log(`... retrying ${this.print()} one more time (remaining retries: ${this.retries})`);
                 this.retries -= 1;
                 return this.executeInMutex();
@@ -309,7 +313,4 @@ export class JobsService {
         }
 
     }
-}
-function showWarning(toast: ToastService, job: JobItem<any>, error){
-    toast.notify('warn', `${this.print()} failed, retrying`, `error was: ${error}`);
 }
