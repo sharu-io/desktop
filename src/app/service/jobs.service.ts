@@ -9,29 +9,39 @@ import Semaphore from 'semaphore-async-await';
 
 const RETRIES = 3;
 
-export interface JobItem<T> {
-    type: string;
-    name: string;
-    icon: string;
+export abstract class JobItem<T> {
+    readonly type: string;
+    readonly name: string;
+    readonly icon: string;
+    
     currentActivity: string;
-    isResolved: boolean;
-    toast: boolean;
-    start(): Promise<T>;
-    print(): string;
+    isResolved: boolean = false;
+    toast: boolean = false;
+    toastService: ToastService;
+
+    abstract start(): Promise<T>;
+    abstract print(): string;
+
+    injectToastService(toastService: ToastService): void {
+        this.toastService = toastService;
+    };
+
+    protected showWarning(toast: ToastService, job: JobItem<any>, error){
+        toast.notify('warn', `${this.print()} failed, retrying`, `error was: ${error}`);
+    }
+
+    constructor(type: string, name: string, icon: string){
+        this.type = type;
+        this.name = name;
+        this.icon = icon;
+    }
 }
 
-export class IpfsLsJob implements JobItem<TreeNodeItem[]> {
-    type = 'IPFS Directory scan';
-    currentActivity: string;
-    name: string;
-    icon: string;
-    toast = false;
-    isResolved = false;
+export class IpfsLsJob extends JobItem<TreeNodeItem[]> {
     retries = RETRIES;
 
     constructor(private ipfsPath: string, private ipfs: any) {
-        this.name = ipfsPath;
-        this.icon = 'folder';
+        super('IPFS Directory scan', ipfsPath, 'folder');
     }
 
     public async start(): Promise<TreeNodeItem[]> {
@@ -50,6 +60,7 @@ export class IpfsLsJob implements JobItem<TreeNodeItem[]> {
             return list;
         } catch (e) {
             if (this.retries > 0) {
+                this.showWarning(this.toastService, this, e);
                 console.log(`... retrying ${this.print()} one more time (remaining retries: ${this.retries})`);
                 this.retries -= 1;
                 return this.start();
@@ -64,18 +75,11 @@ export class IpfsLsJob implements JobItem<TreeNodeItem[]> {
     }
 }
 
-export class IpfsCatJob implements JobItem<any> {
-    type = 'IPFS Cat';
-    currentActivity: string;
-    name: string;
-    icon: string;
-    isResolved = false;
-    toast = false;
+export class IpfsCatJob extends JobItem<any> {
     retries = RETRIES;
 
     constructor(private hash: string, private ipfs: any) {
-        this.name = hash;
-        this.icon = 'get_app';
+        super('IPFS Cat', hash, 'get_app');
     }
 
     public async start(): Promise<any> {
@@ -91,6 +95,7 @@ export class IpfsCatJob implements JobItem<any> {
             return data;
         } catch (e) {
             if (this.retries > 0) {
+                this.showWarning(this.toastService, this, e);
                 console.log(`... retrying ${this.print()} one more time (remaining retries: ${this.retries})`);
                 this.retries -= 1;
                 return this.start();
@@ -105,23 +110,14 @@ export class IpfsCatJob implements JobItem<any> {
     }
 }
 
-export class DownloadJob implements JobItem<IpfsFile> {
-    type = 'Download';
-    name: string;
-    icon: string;
-    currentActivity: string;
-    isResolved = false;
-    toast = false;
+export class DownloadJob extends JobItem<IpfsFile> {
     retries = RETRIES;
-    private toDownload: TreeNodeItem;
 
     constructor(
-        node: TreeNodeItem,
+        private toDownload: TreeNodeItem,
         private file: FileService
     ) {
-        this.toDownload = node;
-        this.name = node.label;
-        this.icon = 'cloud_download';
+        super('Download', toDownload.label, 'cloud_download');
     }
 
     public async start(): Promise<IpfsFile> {
@@ -139,6 +135,7 @@ export class DownloadJob implements JobItem<IpfsFile> {
             return decrypted;
         } catch (e) {
             if (this.retries > 0) {
+                this.showWarning(this.toastService, this, e);
                 console.log(`... retrying ${this.print()} one more time (remaining retries: ${this.retries})`);
                 this.retries -= 1;
                 return this.start();
@@ -152,13 +149,7 @@ export class DownloadJob implements JobItem<IpfsFile> {
         return `Download: ${this.name}`;
     }
 }
-export class UploadJob implements JobItem<void> {
-    type = 'Upload';
-    name: string;
-    icon: string;
-    currentActivity: string;
-    toast = false;
-    isResolved = false;
+export class UploadJob extends JobItem<void> {
     retries = RETRIES;
 
     constructor(
@@ -166,8 +157,7 @@ export class UploadJob implements JobItem<void> {
         private dir: TreeNodeItem,
         private fileservice: FileService
     ) {
-        this.name = file.name;
-        this.icon = 'cloud_upload';
+        super('Upload', file.name, 'cloud_upload');
     }
 
     public async start(): Promise<void> {
@@ -187,6 +177,7 @@ export class UploadJob implements JobItem<void> {
             this.isResolved = true;
         } catch (e) {
             if (this.retries > 0) {
+                this.showWarning(this.toastService, this, e);
                 console.log(`... retrying ${this.print()} one more time (remaining retries: ${this.retries})`);
                 this.retries -= 1;
                 return this.start();
@@ -202,24 +193,15 @@ export class UploadJob implements JobItem<void> {
     }
 }
 
-export class DownloadStreamedJob implements JobItem<void> {
-    type = 'Download';
-    name: string;
-    icon: string;
-    currentActivity: string;
-    isResolved = false;
-    toast = false;
+export class DownloadStreamedJob extends JobItem<void> {
     retries = RETRIES;
-    private toDownload: TreeNodeItem;
 
     constructor(
-        node: TreeNodeItem,
+        private toDownload: TreeNodeItem,
         private filePath: string,
         private file: FileService
     ) {
-        this.toDownload = node;
-        this.name = node.label;
-        this.icon = 'cloud_download';
+        super('Download', toDownload.label, 'cloud_download');
     }
 
     public async start(): Promise<void> {
@@ -230,6 +212,7 @@ export class DownloadStreamedJob implements JobItem<void> {
             this.isResolved = true;
         } catch (e) {
             if (this.retries > 0) {
+                this.showWarning(this.toastService, this, e);
                 console.log(`... retrying ${this.print()} one more time (remaining retries: ${this.retries})`);
                 this.retries -= 1;
                 return this.start();
@@ -244,14 +227,8 @@ export class DownloadStreamedJob implements JobItem<void> {
     }
 }
 
-export class UploadStreamedJob implements JobItem<void> {
+export class UploadStreamedJob extends JobItem<void> {
     static mutex = new Semaphore(1);
-    type = 'Upload';
-    name: string;
-    icon: string;
-    currentActivity: string;
-    toast = false;
-    isResolved = false;
     retries = RETRIES;
 
     constructor(
@@ -260,8 +237,7 @@ export class UploadStreamedJob implements JobItem<void> {
         private dir: TreeNodeItem,
         private fileservice: FileService
     ) {
-        this.name = fileName;
-        this.icon = 'cloud_upload';
+        super('Upload', fileName, 'cloud_upload');
     }
 
     public async start(): Promise<void> {
@@ -282,6 +258,7 @@ export class UploadStreamedJob implements JobItem<void> {
             this.isResolved = true;
         } catch (e) {
             if (this.retries > 0) {
+                this.showWarning(this.toastService, this, e);
                 console.log(`... retrying ${this.print()} one more time (remaining retries: ${this.retries})`);
                 this.retries -= 1;
                 return this.executeInMutex();
@@ -304,6 +281,7 @@ export class JobsService {
     jobs: JobItem<any>[] = [];
 
     async push(job: JobItem<any>): Promise<any> {
+        job.injectToastService(this.toast);
         const val = job.start();
         setTimeout(() => {
             if (!job.isResolved) {
@@ -320,7 +298,7 @@ export class JobsService {
         });
         val.catch(error => {
             console.error(error);
-            this.toast.notify('error', job.type + ' failed', job.print() + ' - ' + error);
+            this.toast.notifySticky('error', job.type + ' failed', job.print() + ' - ' + error);
             this.removeJob(job);
         });
         return val;

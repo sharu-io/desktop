@@ -107,7 +107,7 @@ export class ShareListComponent implements OnInit {
   }
 
   private errorToast(message: string) {
-    this.toast.notify('error', 'Sharing Failure', message);
+    this.toast.notifySticky('error', 'Sharing Failure', message);
   }
 
   async revokeShare(share: TreeNodeItem, receiver: string) {

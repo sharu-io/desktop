@@ -140,7 +140,7 @@ export class MaybeLocalTreeNodeItem implements TreeNodeItem {
                         if (e instanceof NoShareSettingsError) {
                             this.toast.notify('error', 'no sharesettings found for ' + e.dir, '');
                         } else {
-                            this.toast.notify('error', 'aaaargg...', e.message);
+                            this.toast.notifySticky('error', 'aaaargg...', e.message);
                         }
                         this.resolved = false;
                     }
