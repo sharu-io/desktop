@@ -282,7 +282,7 @@ export class JobsService {
         });
         val.catch(error => {
             console.error(error);
-            this.toast.notify('error', job.type + ' failed', job.print() + ' - ' + error);
+            this.toast.notifySticky('error', job.type + ' failed', job.print() + ' - ' + error);
             this.removeJob(job);
         });
         return val;
