@@ -45,10 +45,10 @@
       <ng-template let-item let-last="last" ngFor [ngForOf]="ss.children">
         <mat-list-item>
           <mat-icon class="icon-container">{{item.icon.name}}</mat-icon>
-          <a *ngIf="!item.leaf && (item.localPath === undefined || item.localPath === null)" [routerLink]="['/share', fromShare.hash, item.hash]">{{item.label}}
-          </a>
-          <a *ngIf="!item.leaf && (item.localPath !== undefined && item.localPath !== null)" [routerLink]="['/local', fromShare.hash, item.localPath]">{{item.label}}
-          </a>
+          <div *ngIf="!item.leaf">
+            <a *ngIf="item.localPath === undefined || item.localPath === null" [routerLink]="['/share', fromShare.hash, item.hash]">{{item.label}}</a>
+            <a *ngIf="item.localPath !== undefined && item.localPath !== null" [routerLink]="['/local', fromShare.hash, item.localPath]">{{item.label}}</a>
+          </div>
           <div *ngIf="item.leaf">
             {{item.label}}
           </div>
