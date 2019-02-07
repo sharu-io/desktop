@@ -4,6 +4,14 @@ finally, your data is safu
 
 bring back the u to filesharing
 
+# Changelog
+
+## v 0.1.3
+
+- switching back to js-ipfs
+- basic deuglyfication of the code
+- app is opensource now :D
+
 # binary downloads
 - [linux](https://gateway.ipfs.io/ipfs/QmbSafe3bguDxkd7ApJws8nfDswRT3TJHaFvdWpmEpnJyg/sharu-0.1.3.AppImage)
 - [mac](https://gateway.ipfs.io/ipfs/QmbSafe3bguDxkd7ApJws8nfDswRT3TJHaFvdWpmEpnJyg/sharu-0.1.3.dmg)
