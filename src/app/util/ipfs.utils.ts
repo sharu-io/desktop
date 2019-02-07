@@ -5,6 +5,7 @@ export class IpfsUtils {
         const content: TreeNodeItem[] = [];
         dirs.forEach(d => {
             content.push({
+                size: d.size,
                 label: d.name,
                 leaf: d.type !== 'dir',
                 publishedToChain: undefined,

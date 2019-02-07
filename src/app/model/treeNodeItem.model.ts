@@ -26,6 +26,8 @@ export interface TreeNodeItem extends TreeNode {
     droppable?: boolean;
     selectable?: boolean;
 
+    size?: number
+
     // custom attributes
     hash: string;
     publishedToChain: boolean;
@@ -88,6 +90,7 @@ export class MaybeLocalTreeNodeItem implements TreeNodeItem {
     draggable?: boolean;
     droppable?: boolean;
     selectable?: boolean;
+    size?: number;
 
     // custom attributes
     hash: string;
@@ -134,6 +137,7 @@ export class MaybeLocalTreeNodeItem implements TreeNodeItem {
                         this.label = shareName;
                         this.iconLocation = SharuIcons.localShare;
                         this.localPath = localDir.localPath;
+                        this.size = localDir.size;
                         this.local = true;
                         this.resolved = true;
                     } catch (e) {
@@ -160,6 +164,7 @@ export class MaybeLocalTreeNodeItem implements TreeNodeItem {
                         this.iconLocation = SharuIcons.localShare;
                         this.localPath = ld.localPath;
                         this.local = true;
+                        this.size = ld.size;
                         this.resolved = true;
                         this.toast.notify('info', 'we are locally ahead', '...and synchronize the local state to the chain');
                         await this.eth.shareContract.updateHash(this.pointer, oldHash, ld.hash);

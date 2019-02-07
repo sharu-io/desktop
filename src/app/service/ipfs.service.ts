@@ -44,6 +44,7 @@ export class IpfsService {
             const stat = await this.ipfs.files.stat(`/${localDir.name}`);
             content.push({
                 hash: stat.hash,
+                size: stat.size,
                 label: localDir.name,
                 leaf: stat.type !== 'directory',
                 publishedToChain: false,
@@ -65,6 +66,7 @@ export class IpfsService {
         for (const d of dirs) {
             const f = await this.ipfs.files.stat(`${dirname}/${d.name}`);
             dirContent.push({
+                size: f.size,
                 label: d.name,
                 local: true,
                 hash: f.hash,

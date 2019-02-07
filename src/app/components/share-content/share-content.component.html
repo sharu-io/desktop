@@ -50,7 +50,7 @@
             <a *ngIf="item.localPath !== undefined && item.localPath !== null" [routerLink]="['/local', fromShare.hash, item.localPath]">{{item.label}}</a>
           </div>
           <div *ngIf="item.leaf">
-            {{item.label}}
+            {{item.label}} - {{this.toReadAble(item.size)}}
           </div>
           <button class="file-menu" *ngIf="this.item2delete === null" mat-icon-button [matMenuTriggerFor]="menu"
             xPosition="after">
