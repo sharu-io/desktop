@@ -8,6 +8,8 @@ bring back the u to filesharing
 
 ## v 0.1.4
 - fixed [nounce has already been used](https://github.com/sharu-io/desktop/issues/12)
+- show [warnings when retrying a failed long-running-activity](https://github.com/sharu-io/desktop/issues/2)
+
 ## v 0.1.3
 
 - switching back to js-ipfs
