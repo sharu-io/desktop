@@ -1,6 +1,3 @@
-import Semaphore from 'semaphore-async-await';
-import { mutexify } from './mutex';
-
 export class PausableIntervalTask {
     private intervalId = null;
     constructor(private func, private ms: number) { }
