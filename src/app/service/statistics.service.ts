@@ -16,10 +16,10 @@ export class StatisticsService {
                     key: 'incoming total', value: this.bytesToReadable(statisticsFrom.totalIn)
                 },
                 {
-                    key: 'incoming rate', value: this.bytesToReadable(statisticsFrom.rateIn) + '/s'
+                    key: 'outgoing total', value: this.bytesToReadable(statisticsFrom.totalOut)
                 },
                 {
-                    key: 'outgoing total', value: this.bytesToReadable(statisticsFrom.totalOut)
+                    key: 'incoming rate', value: this.bytesToReadable(statisticsFrom.rateIn) + '/s'
                 },
                 {
                     key: 'outgoing rate', value: this.bytesToReadable(statisticsFrom.rateOut) + '/s'
