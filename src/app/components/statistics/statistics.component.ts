@@ -11,4 +11,5 @@ export class StatisticsComponent {
     constructor(public stats: StatisticsService) { }
 
     displayedColumnsBandWith: string[] = ['key', 'value'];
+    displayedColumnsPeers: string[] = ['peer'];
 }

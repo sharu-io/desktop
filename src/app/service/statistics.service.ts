@@ -2,13 +2,19 @@ import { Injectable } from '@angular/core';
 import { IpfsService } from './ipfs.service';
 import { SidebarService } from './sidebar.service';
 import { PausableIntervalTask } from '../util/pausableIntervalTask';
+import { MatTableDataSource } from '@angular/material';
 
 @Injectable({
     providedIn: 'root'
 })
 export class StatisticsService {
+
+    public statsBw = null;
+    public peers = null;
+    public peersSource = new MatTableDataSource(this.peers);
+
     private runStatistics = false;
-    private readonly allStats =  [
+    private readonly allStats = [
         new PausableIntervalTask(async () => {
             const statisticsFrom = await this.ipfs.ipfs.stats.bw();
             this.statsBw = [
@@ -25,6 +31,11 @@ export class StatisticsService {
                     key: 'outgoing rate', value: this.bytesToReadable(statisticsFrom.rateOut) + '/s'
                 }
             ];
+        }, 2000),
+        new PausableIntervalTask(async () => {
+            const statisticsFrom = await this.ipfs.ipfs.swarm.peers();
+            this.peers = statisticsFrom.map(p => p.addr.toString()).map(s => ({peer: s}));
+            this.peersSource.data = this.peers;
         }, 2000),
     ];
 
@@ -46,7 +57,9 @@ export class StatisticsService {
         });
     }
 
-    public statsBw = null;
+    public applyFilterPeers(filterValue: string) {
+        this.peersSource.filter = filterValue.trim().toLowerCase();
+    }
 
     private bytesToReadable(incoming) {
         let suffix = 'B';

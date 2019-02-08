@@ -3,7 +3,7 @@
 </mat-card>
 <mat-card>
     <h3>BandWidth</h3>
-    Note: rate-data seems not to be right... 
+    Note: rate-data seems not to be right...
     <table mat-table [dataSource]="stats.statsBw" *ngIf="stats.statsBw">
         <ng-container matColumnDef="key">
 
@@ -17,4 +17,22 @@
 
         <tr mat-row *matRowDef="let row; columns: displayedColumnsBandWith;"></tr>
     </table>
+</mat-card>
+<mat-card>
+    <h3>Peers</h3>
+    <div *ngIf="(stats.peers)">
+        <div>
+            PeerCount: {{ stats.peers.length }}
+            <mat-form-field>
+                <input matInput (keyup)="stats.applyFilterPeers($event.target.value)" placeholder="Filter">
+            </mat-form-field>
+        </div>
+        <table mat-table [dataSource]="stats.peersSource">
+            <ng-container matColumnDef="peer">
+                <th mat-header-cell *matHeaderCellDef>Peer</th>
+                <td mat-cell *matCellDef="let element"> {{element.peer}} </td>
+            </ng-container>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsPeers;"></tr>
+        </table>
+    </div>
 </mat-card>
