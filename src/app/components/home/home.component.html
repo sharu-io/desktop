@@ -76,7 +76,7 @@
     </mat-sidenav-container>
   </mat-sidenav>
   <share-content [selected]="selectedItem" [fromShare]="selectedShare"></share-content>
-  <mat-sidenav class="sidebar-sidenav" #sidebar closed mode="over" position="end">
+  <mat-sidenav class="sidebar-sidenav" #sidebar closed mode="over" position="end" (closed)="sbs.select('')">
     <button mat-icon-button (click)="sidebar.toggle()">
       <mat-icon>close</mat-icon>
     </button>

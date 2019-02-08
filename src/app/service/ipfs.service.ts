@@ -10,7 +10,6 @@ import { JobsService, IpfsCatJob, IpfsLsJob } from './jobs.service';
     providedIn: 'root'
 })
 export class IpfsService {
-    ipfs;
 
     constructor(
         private settings: SettingsService,
@@ -35,6 +34,7 @@ export class IpfsService {
             this.ipfs = (window as any).IpfsApi(ipfsConfig.server, ipfsConfig.port);
         }
     }
+    ipfs;
 
     // this is doing a ls on the locally running ipfs, no need to jobify
     public async scanLocalRootFolder(): Promise<TreeNodeItem[]> {
@@ -190,45 +190,5 @@ export class IpfsService {
                 console.log('unpinning unsuccessfull');
             }
         }
-    }
-
-    public updateStatsBwRunning = false;
-    public statsBw = null;
-    public async updateStatsBw(){
-        this.updateStatsBwRunning = true;
-        const statisticsFrom = await this.ipfs.stats.bw();
-        this.statsBw = [
-            {
-                key: "incoming total", value: this.bytesToReadable(statisticsFrom.totalIn) 
-            },
-            {
-                key: "incoming rate", value: this.bytesToReadable(statisticsFrom.rateIn) + "/s"
-            },
-            {
-                key: "outgoing total", value: this.bytesToReadable(statisticsFrom.totalOut)
-            },
-            {
-                key: "outgoing rate", value: this.bytesToReadable(statisticsFrom.rateOut) + "/s"
-            }
-        ]
-        
-        this.updateStatsBwRunning = false;
-    }
-    private bytesToReadable(incoming) {
-        let suffix = "B";
-        if (incoming > 1024){
-            incoming /= 1024;
-            suffix = "kB";
-        }
-        if (incoming > 1024){
-            incoming /= 1024;
-            suffix = "MB";
-        }
-        if (incoming > 1024){
-            incoming /= 1024;
-            suffix = "GB";
-        }
-        incoming = incoming.toFixed(3);
-        return incoming + " " + suffix;
     }
 }

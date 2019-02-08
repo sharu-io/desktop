@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import { IpfsService } from '../../service/ipfs.service';
+import { StatisticsService } from '../../service/statistics.service';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -8,7 +8,7 @@ import { IpfsService } from '../../service/ipfs.service';
     templateUrl: './statistics.component.html'
 })
 export class StatisticsComponent {
-    constructor(public stats : IpfsService){}
+    constructor(public stats: StatisticsService) { }
 
-  displayedColumns: string[] = ['key', 'value'];
+    displayedColumnsBandWith: string[] = ['key', 'value'];
 }
