@@ -8,6 +8,7 @@ import { FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/
 import { ElectronService } from 'ngx-electron';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'share-content',
   templateUrl: './share-content.component.html',
   styleUrls: ['./share-content.component.scss'],
@@ -106,21 +107,21 @@ export class ShareContentComponent implements OnInit {
     }
   }
 
-  public toReadAble(bytes: number) : string {
-    let prefix = "B";
-    if (bytes > 1024){
+  public toReadAble(bytes: number): string {
+    let prefix = 'B';
+    if (bytes > 1024) {
       bytes /= 1024;
-      prefix = "kB";
+      prefix = 'kB';
     }
-    if (bytes > 1024){
+    if (bytes > 1024) {
       bytes /= 1024;
-      prefix = "MB";
+      prefix = 'MB';
     }
-    if (bytes > 1024){
+    if (bytes > 1024) {
       bytes /= 1024;
-      prefix = "GB";
+      prefix = 'GB';
     }
 
-    return `${prefix.length>1 ? bytes.toFixed(3) : bytes} ${prefix}`;
+    return `${prefix.length > 1 ? bytes.toFixed(3) : bytes} ${prefix}`;
   }
 }
