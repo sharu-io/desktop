@@ -23,7 +23,7 @@
     "postinstall:electron": "node postinstall",
     "ng": "ng",
     "startDev": "npm run postinstall:electron && npm-run-all -p ng:serveDev electron:serve",
-    "startKaleido": "npm run postinstall:electron && npm-run-all -p ng:serveKaleido electron:serve",
+    "start": "npm run postinstall:electron && npm-run-all -p ng:serveKaleido electron:serve",
     "build": "npm run postinstall:electron && npm run electron:serve-tsc && ng build",
     "build:dev": "npm run build -- -c dev",
     "build:devKaleido": "npm run build -- -c devKaleido",
