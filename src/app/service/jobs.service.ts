@@ -20,7 +20,9 @@ export abstract class JobItem<T> {
     toastService: ToastService;
 
     abstract start(): Promise<T>;
-    abstract print(): string;
+    print(): string {
+        return `${this.type}: ${this.name}`;
+    }
 
     injectToastService(toastService: ToastService): void {
         this.toastService = toastService;
@@ -69,10 +71,6 @@ export class IpfsLsJob extends JobItem<TreeNodeItem[]> {
             }
         }
     }
-
-    public print(): string {
-        return `IpfsLs: ${this.name}`;
-    }
 }
 
 export class IpfsCatJob extends JobItem<any> {
@@ -103,10 +101,6 @@ export class IpfsCatJob extends JobItem<any> {
                 throw e;
             }
         }
-    }
-
-    public print(): string {
-        return `IpfsCat: ${this.name}`;
     }
 }
 
@@ -143,10 +137,6 @@ export class DownloadJob extends JobItem<IpfsFile> {
                 throw e;
             }
         }
-    }
-
-    public print(): string {
-        return `Download: ${this.name}`;
     }
 }
 export class UploadJob extends JobItem<void> {
@@ -187,10 +177,6 @@ export class UploadJob extends JobItem<void> {
         }
 
     }
-
-    public print(): string {
-        return `Upload: ${this.name}`;
-    }
 }
 
 export class DownloadStreamedJob extends JobItem<void> {
@@ -220,10 +206,6 @@ export class DownloadStreamedJob extends JobItem<void> {
                 throw e;
             }
         }
-    }
-
-    public print(): string {
-        return `Download: ${this.name}`;
     }
 }
 
@@ -266,10 +248,6 @@ export class UploadStreamedJob extends JobItem<void> {
                 throw e;
             }
         }
-    }
-
-    public print(): string {
-        return `Upload: ${this.name}`;
     }
 }
 
