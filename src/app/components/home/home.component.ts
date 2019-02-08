@@ -11,6 +11,7 @@ import { InviteService } from '../../service/invite.service';
 import { ContactService } from '../../service/contact.service';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],

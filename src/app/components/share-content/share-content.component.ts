@@ -8,6 +8,7 @@ import { FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/
 import { ElectronService } from 'ngx-electron';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'share-content',
   templateUrl: './share-content.component.html',
   styleUrls: ['./share-content.component.scss'],
