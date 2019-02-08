@@ -106,4 +106,22 @@ export class ShareContentComponent implements OnInit {
       this.fileUpload.nativeElement.click();
     }
   }
+
+  public toReadAble(bytes: number): string {
+    let prefix = 'B';
+    if (bytes > 1024) {
+      bytes /= 1024;
+      prefix = 'kB';
+    }
+    if (bytes > 1024) {
+      bytes /= 1024;
+      prefix = 'MB';
+    }
+    if (bytes > 1024) {
+      bytes /= 1024;
+      prefix = 'GB';
+    }
+
+    return `${prefix.length > 1 ? bytes.toFixed(3) : bytes} ${prefix}`;
+  }
 }
