@@ -12,16 +12,16 @@ let ipfsApi = null;
 
 let initPromise = null;
 
-const basePathToSharu = path.resolve(app.getPath('appData'), 'sharu');
-
-
+function getBasePathToSharu(): string {
+    return path.resolve(app.getPath('userData'));
+}
 
 export async function init(forcedPath?: string) {
     if (initPromise !== null) {
         return initPromise;
     } else {
         initPromise = new Promise(async (resolve, reject) => {
-            const sharuPath = ((forcedPath) ? forcedPath : basePathToSharu) + path.sep + 'ipfs';
+            const sharuPath = ((forcedPath) ? forcedPath : getBasePathToSharu()) + path.sep + 'ipfs';
             const promUnlink = promisify(fs.unlink);
             let ipfsAlreadyInited = false;
 
@@ -319,7 +319,7 @@ export function generateIpfsConfig(forcedPath?: string) {
 }
 
 export function getCustomBootStrapAdditions(forcedPath?: string) {
-    const pathToCustomBootstrapAdditions = ((forcedPath) ? forcedPath : basePathToSharu) + path.sep + CUSTOM_BOOTSTRAP_FILE;
+    const pathToCustomBootstrapAdditions = ((forcedPath) ? forcedPath : getBasePathToSharu()) + path.sep + CUSTOM_BOOTSTRAP_FILE;
 
     let bootStrap = { 'Bootstrap': [] };
     if (fs.existsSync(pathToCustomBootstrapAdditions)) {
