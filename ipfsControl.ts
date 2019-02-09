@@ -155,7 +155,6 @@ export async function init(forcedPath?: string) {
                 if (dirty) {
                     console.log('setting new bootstrap-config');
                     try {
-                        await promIpfsdSetConfig(['Bootstrap'], JSON.stringify(leConfig));
                         await (() => {
                             return new Promise((res, rej) => {
                                 ipfsd.setConfig(['Bootstrap'], JSON.stringify(leConfig), (error) => {
