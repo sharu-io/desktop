@@ -71,6 +71,7 @@ import { InvitesComponent } from './components/invites/invites.component';
 import { LicenceService } from './service/licence.service';
 import { LicenceComponent } from './components/licence/licence.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
+import { StatisticsService } from './service/statistics.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -162,7 +163,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SharuSettingsService,
     Location,
     LicenceService,
-    MessageService
+    MessageService,
+    StatisticsService
   ],
   bootstrap: [AppComponent]
 })

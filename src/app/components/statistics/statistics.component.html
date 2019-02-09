@@ -3,9 +3,7 @@
 </mat-card>
 <mat-card>
     <h3>BandWidth</h3>
-    <button mat-button *ngIf="!stats.updateStatsBwRunning" (click)="stats.updateStatsBw()">
-        update
-    </button>
+    Note: rate-data seems not to be right...
     <table mat-table [dataSource]="stats.statsBw" *ngIf="stats.statsBw">
         <ng-container matColumnDef="key">
 
@@ -14,11 +12,27 @@
         </ng-container>
         <ng-container matColumnDef="value">
             <th mat-header-cell *matHeaderCellDef> Value</th>
-            <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+            <td mat-cell style="text-align: right" *matCellDef="let element"> {{element.value}} </td>
         </ng-container>
 
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsBandWith;"></tr>
     </table>
-<br/>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</mat-card>
+<mat-card>
+    <h3>Peers</h3>
+    <div *ngIf="(stats.peers)">
+        <div>
+            PeerCount: {{ stats.peers.length }}
+            <mat-form-field>
+                <input matInput (keyup)="stats.applyFilterPeers($event.target.value)" placeholder="Filter">
+            </mat-form-field>
+        </div>
+        <table mat-table [dataSource]="stats.peersSource">
+            <ng-container matColumnDef="peer">
+                <th mat-header-cell *matHeaderCellDef>Peer</th>
+                <td mat-cell *matCellDef="let element"> {{element.peer}} </td>
+            </ng-container>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsPeers;"></tr>
+        </table>
+    </div>
 </mat-card>
