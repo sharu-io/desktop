@@ -1,5 +1,6 @@
-import { app, BrowserWindow, screen, Menu } from 'electron';
+import { app, BrowserWindow, screen, Menu, remote } from 'electron';
 import * as path from 'path';
+import * as fs from 'fs';
 import * as url from 'url';
 import * as exitHook from 'async-exit-hook';
 import { stop, init } from './ipfsControl';
@@ -10,12 +11,35 @@ serve = args.some(val => val === '--serve');
 
 process.env['ELECTRON_ENABLE_LOGGING'] = 'true';
 
+evaluateSharuArguments();
+
 exitHook(() => {
   console.log('exiting');
   stop().then(() => {
     console.log('IPFS stopped');
   });
 });
+
+
+// test via npm run start: add argument at the end of entry electron:serve in package.json
+// test in macos: 'open sharu.app --args ...'
+
+function evaluateSharuArguments() {
+  // sharuPath: changes the userData path of sharu including app data and of course ipfs daemon
+  const overrideSharuPath = process.argv.find(a => {
+    return (a.startsWith('sharuPath='));
+  });
+  if ((overrideSharuPath)) {
+    const newUserDataPath = overrideSharuPath.split('=')[1];
+    const dirname = path.dirname(newUserDataPath);
+    if (fs.existsSync(dirname)) {
+      console.log('Changing path to sharu to: ' + newUserDataPath);
+      app.setPath('userData', newUserDataPath);
+    } else {
+      console.log('Path ' + newUserDataPath + ' does not exist - using standard path: ' + app.getPath('userData'));
+    }
+  }
+}
 
 async function createWindow() {
   await init();
