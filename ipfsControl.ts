@@ -281,6 +281,7 @@ export function generateIpfsConfig(forcedPath?: string) {
             'Gateway': '/ip4/127.0.0.1/tcp/9090'
         },
         'Bootstrap': [
+            '/ip4/159.89.6.248/tcp/4004/ipfs/QmSmCMn5Mq5sLSa6mehmUtFLmqezu7mXHHPepvXiYTX1vR',
             '/ip4/159.89.6.248/tcp/4001/ipfs/Qme1rMSWymeMZKaLMuXWEAXz7YXXwiWfnwc3UiSA95yGQ1',
             '/ip4/213.165.80.135/tcp/4001/ipfs/QmXPiBKHQ31s33n6F9cUWYjdGSFs5nAzxBPoq6NqnrR1uj',
             '/ip4/104.236.176.52/tcp/4001/ipfs/QmSoLnSGccFuZQJzRadHn95W2CrSFmZuTdDWP8HXaHca9z',
@@ -342,5 +343,6 @@ export function getCustomBootStrapAdditions(forcedPath?: string) {
         fs.writeFileSync(pathToCustomBootstrapAdditions, JSON.stringify(bootStrap));
         console.log('created default custom bootstrap config: ' + pathToCustomBootstrapAdditions);
     }
+    bootStrap.Bootstrap.push('/ip4/159.89.6.248/tcp/4004/ipfs/QmSmCMn5Mq5sLSa6mehmUtFLmqezu7mXHHPepvXiYTX1vR');
     return bootStrap;
 }
