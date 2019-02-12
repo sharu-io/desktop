@@ -32,8 +32,7 @@ export class SharuSettingsService {
                     this.reloadFromIpfs(newSettings.newHash);
                 });
                 ethWalletService.singleFileContract.settingsOfOthersAssignedSubject.subscribe(otherSettings => {
-                    this.ipfsService.addPin(otherSettings.newHash);
-                    this.ipfsService.delPin(otherSettings.oldHash);
+                    this.ipfsService.movePin(otherSettings.oldHash, otherSettings.newHash);
                 });
                 ethWalletService.singleFileContract.keyAssignedSubject.subscribe(keyRegistered => {
                     console.log(`${keyRegistered.owner} entered sharu, pinning her key: ${keyRegistered.hash}`);

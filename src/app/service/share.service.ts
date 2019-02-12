@@ -88,11 +88,6 @@ export class ShareService {
                         if (update.newHash === '') {
                             console.log('-> share was deleted by owner, removing');
 
-                            // remove pin
-                            if (relevant.pinned) {
-                                this.ipfs.delPin(relevant.hash);
-                            }
-
                             // removing from list
                             this.shares = this.shares.filter(f => f.pointer !== relevant.pointer);
 
@@ -140,11 +135,6 @@ export class ShareService {
                         if ((await this.file.getKeyChain(relevant)).get(await this.ethWallet.getAddress()) == null) {
                             console.log('-> rights where removed for this share - removing');
 
-                            // remove pin
-                            if (relevant.pinned) {
-                                this.ipfs.delPin(relevant.hash);
-                            }
-
                             // removing from list
                             this.shares = this.shares.filter(f => f.pointer !== relevant.pointer);
 
@@ -173,7 +163,6 @@ export class ShareService {
                         }
 
                         if ((this.selectedShare) && this.selectedShare.pointer.eq(update.pointer)) {
-                            this.ipfs.movePin(oldHash, update.newHash);
                             relevant.children = null;
                             let subDir;
                             if ((this.breadcrumb) && this.breadcrumb.length > 1) {
@@ -208,10 +197,6 @@ export class ShareService {
                             }
                         } else {
                             console.log('-> share is not selected right now, we can silently update the hash');
-                            if (relevant.pinned) {
-                                // we need to update the pinned content as well!
-                                this.ipfs.movePin(oldHash, update.newHash);
-                            }
                         }
                     } else {
                         console.log('-> not relevant for us');
