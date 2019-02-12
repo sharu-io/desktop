@@ -62,7 +62,6 @@ export class ShareService {
                     const rootDirs = (await this.ipfs.scanLocalRootFolder()).filter(f => f.leaf === false);
                     shareInfo.forEach(s => {
                         this.shares.push(this.initiateRootShare(rootDirs, s));
-                        this.ipfs.addPin(s.hash);
                     });
                     setTimeout(() => {
                         const baf = baffle('.baffle', { characters: '█▓▒░', speed: 150 }).reveal(5000);
