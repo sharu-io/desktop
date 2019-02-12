@@ -236,6 +236,11 @@ export async function download(filePath, symKey, iv, authTag, hash) {
     return new Promise(async (resolve, reject) => {
         try {
             const stream = ipfsApi.catReadableStream(hash);
+            stream.on('error', (err) => {
+                console.log(`IPFS download error ${err}`);
+                reject(err);
+            });
+
             const decipher = createDecipheriv(
                 'aes-256-gcm',
                 Buffer.from(symKey, 'latin1'),
@@ -247,8 +252,12 @@ export async function download(filePath, symKey, iv, authTag, hash) {
                 console.log(`Download decipher error ${err}`);
                 reject(err);
             });
+            
             const output = createWriteStream(filePath);
-
+            output.on('error', (err) => {
+                console.log(`File system writing error ${err}`);
+                reject(err);
+            });
             output.on('finish', () => {
                 resolve();
             });
