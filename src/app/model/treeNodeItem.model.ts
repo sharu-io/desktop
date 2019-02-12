@@ -26,7 +26,7 @@ export interface TreeNodeItem extends TreeNode {
     droppable?: boolean;
     selectable?: boolean;
 
-    size?: number
+    size?: number;
 
     // custom attributes
     hash: string;
@@ -47,8 +47,6 @@ export interface TreeNodeItem extends TreeNode {
     localMatch?: Promise<boolean>;
     // only on sharelevel: has this been successfully resolved yet? (undefined: still trying, false: nope, unreachable, true: go ahead)
     resolved?: boolean;
-    // only on sharelevel: shall we pin this locally?
-    pinned?: boolean;
 
     // just for total brickage
     desynced?: boolean;
@@ -109,7 +107,6 @@ export class MaybeLocalTreeNodeItem implements TreeNodeItem {
     // in the local ipfs
     localMatch?: Promise<boolean>;
     resolved?: boolean;
-    pinned?: boolean;
 
     // just for total brickage
     desynced?: boolean;
