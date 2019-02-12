@@ -15,9 +15,24 @@
 
 # Binary downloads
 
-- [linux](https://gateway.ipfs.io/ipfs/QmbSafe3bguDxkd7ApJws8nfDswRT3TJHaFvdWpmEpnJyg/sharu-0.1.3.AppImage)
-- [mac](https://gateway.ipfs.io/ipfs/QmbSafe3bguDxkd7ApJws8nfDswRT3TJHaFvdWpmEpnJyg/sharu-0.1.3.dmg)
-- [windows](https://gateway.ipfs.io/ipfs/QmbSafe3bguDxkd7ApJws8nfDswRT3TJHaFvdWpmEpnJyg/sharu-0.1.3.exe)
+- [linux](https://gateway.ipfs.io/ipfs/QmYqo3BfnZfPAcEj2r5MGMqWWCwcQYFPgeXiBZ6w95zeBb/sharu-1.0.0.AppImage)
+- [mac](https://gateway.ipfs.io/ipfs/QmYqo3BfnZfPAcEj2r5MGMqWWCwcQYFPgeXiBZ6w95zeBb/sharu-1.0.0.dmg)
+- [windows](https://gateway.ipfs.io/ipfs/QmYqo3BfnZfPAcEj2r5MGMqWWCwcQYFPgeXiBZ6w95zeBb/sharu-1.0.0.exe)
+
+# Changelog
+
+ ## v 1.0.0
+- fixed [nounce has already been used](https://github.com/sharu-io/desktop/issues/12)
+- show [warnings when retrying a failed long-running-activity](https://github.com/sharu-io/desktop/issues/2)
+- show [filesizes](https://github.com/sharu-io/desktop/issues/4)
+- less greedy pinning
+- correct handling of [socket hangups](https://github.com/sharu-io/desktop/issues/3)
+
+ ## v 0.1.3
+
+ - switching back to js-ipfs
+- basic deuglyfication of the code
+- app is opensource now :D
 
 # Upgrading
 ## versions < 0.1.3
