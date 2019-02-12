@@ -73,6 +73,5 @@ npm run electron:$platform
 You will find the binary build in the subdirectory `releases`.
 
 # Troubleshooting
-## Socket Hangup
 
-In case you receive a "socket hangup" on downloading, just restart the app - looks like the streaming between the app and ipfsd has still some issues. Could happen that the download is already finished.
+Please don't hesitate and open a ticket [here](https://github.com/sharu-io/desktop/issues)
