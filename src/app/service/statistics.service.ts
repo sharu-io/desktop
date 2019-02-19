@@ -24,12 +24,12 @@ export class StatisticsService {
                 {
                     key: 'outgoing total', value: this.bytesToReadable(statisticsFrom.totalOut)
                 },
-                {
-                    key: 'incoming rate', value: this.bytesToReadable(statisticsFrom.rateIn) + '/s'
-                },
-                {
-                    key: 'outgoing rate', value: this.bytesToReadable(statisticsFrom.rateOut) + '/s'
-                }
+                // {
+                //     key: 'incoming rate', value: this.bytesToReadable(statisticsFrom.rateIn) + '/s'
+                // },
+                // {
+                //     key: 'outgoing rate', value: this.bytesToReadable(statisticsFrom.rateOut) + '/s'
+                // }
             ];
         }, 2000),
         new PausableIntervalTask(async () => {
