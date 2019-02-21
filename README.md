@@ -13,11 +13,8 @@
 
 ### Project status - `friendly openbeta`
 
-# Binary downloads
+News: We started a [whitepaper](https://github.com/sharu-io/whitepaper/blob/master/whitepaper.md) and a [pinning-node](https://github.com/sharu-io/pinning-node)!
 
-- [linux](https://gateway.ipfs.io/ipfs/QmYqo3BfnZfPAcEj2r5MGMqWWCwcQYFPgeXiBZ6w95zeBb/sharu-1.0.0.AppImage)
-- [mac](https://gateway.ipfs.io/ipfs/QmYqo3BfnZfPAcEj2r5MGMqWWCwcQYFPgeXiBZ6w95zeBb/sharu-1.0.0.dmg)
-- [windows](https://gateway.ipfs.io/ipfs/QmYqo3BfnZfPAcEj2r5MGMqWWCwcQYFPgeXiBZ6w95zeBb/sharu-1.0.0.exe)
 
 # Changelog
 
