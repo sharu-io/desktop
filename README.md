@@ -15,6 +15,11 @@
 
 News: We started a [whitepaper](https://github.com/sharu-io/whitepaper/blob/master/whitepaper.md) and a [pinning-node](https://github.com/sharu-io/pinning-node)!
 
+# Binary downloads
+
+- [linux](https://gateway.ipfs.io/ipfs/QmNwpsLypKHiLysadXzu6J4znK1kVRMgwQjBDBbnPSZy88/sharu-1.0.0.AppImage)
+- [mac](https://gateway.ipfs.io/ipfs/QmNwpsLypKHiLysadXzu6J4znK1kVRMgwQjBDBbnPSZy88/sharu-1.0.0.dmg)
+- [windows](https://gateway.ipfs.io/ipfs/QmNwpsLypKHiLysadXzu6J4znK1kVRMgwQjBDBbnPSZy88/sharu-1.0.0.exe)
 
 # Changelog
 
