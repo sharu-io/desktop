@@ -10,6 +10,8 @@ import { MatTableDataSource } from '@angular/material';
 export class StatisticsService {
 
     public statsBw = null;
+    public totalIn = null;
+    public totalOut = null;
     public peers = null;
     public peersSource = new MatTableDataSource(this.peers);
 
@@ -17,12 +19,14 @@ export class StatisticsService {
     private readonly allStats = [
         new PausableIntervalTask(async () => {
             const statisticsFrom = await this.ipfs.ipfs.stats.bw();
+            this.totalIn = this.bytesToReadable(statisticsFrom.totalIn);
+            this.totalOut = this.bytesToReadable(statisticsFrom.totalOut);
             this.statsBw = [
                 {
-                    key: 'incoming total', value: this.bytesToReadable(statisticsFrom.totalIn)
+                    key: 'incoming total', value: this.totalIn
                 },
                 {
-                    key: 'outgoing total', value: this.bytesToReadable(statisticsFrom.totalOut)
+                    key: 'outgoing total', value: this.totalOut
                 },
                 // {
                 //     key: 'incoming rate', value: this.bytesToReadable(statisticsFrom.rateIn) + '/s'
