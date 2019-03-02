@@ -65,10 +65,6 @@ export async function init(forcedPath?: string) {
                     return reject(err);
                 }
                 ipfsd = _ipfsd;
-                const promIpfsdInit = promisify(ipfsd.init);
-                const promIpfsdStart = promisify(ipfsd.start);
-                const promIpfsdGetConfig = promisify(ipfsd.getConfig);
-                const promIpfsdSetConfig = promisify(ipfsd.setConfig);
 
                 assert.ok(ipfsd, 'deamon did not spawn');
                 console.log('ipfs is inited (says ipfsd): ' + ipfsd.initialized);
