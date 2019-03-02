@@ -8,7 +8,7 @@ import { StatisticsService } from '../../service/statistics.service';
     templateUrl: './statistics.component.html'
 })
 export class StatisticsComponent {
-    constructor(public stats: StatisticsService) { }
+    constructor(public stats: StatisticsService, public ipfs: IpfsService) { }
 
     displayedColumnsBandWith: string[] = ['key', 'value'];
     displayedColumnsPeers: string[] = ['peer'];

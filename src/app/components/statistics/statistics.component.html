@@ -28,6 +28,10 @@
             <mat-form-field>
                 <input matInput (keyup)="stats.applyFilterPeers($event.target.value)" placeholder="Filter">
             </mat-form-field>
+
+            <mat-form-field>
+                <input matInput (keydown.enter)="ipfs.connectPeer($event.target.value)" placeholder="Add Peer">
+            </mat-form-field>
         </div>
         <table mat-table [dataSource]="stats.peersSource">
             <ng-container matColumnDef="peer">

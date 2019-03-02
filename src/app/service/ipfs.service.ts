@@ -193,4 +193,8 @@ export class IpfsService {
             }
         }
     }
+
+    public async connectPeer(peer: string) {
+        await this.ipfs.swarm.connect(peer);
+    }
 }
