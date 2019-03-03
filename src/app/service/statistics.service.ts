@@ -8,8 +8,12 @@ import { MatTableDataSource } from '@angular/material';
     providedIn: 'root'
 })
 export class StatisticsService {
+    panelState = new Map<string, boolean>();
 
+    public id = null;
     public statsBw = null;
+    public totalIn = null;
+    public totalOut = null;
     public peers = null;
     public peersSource = new MatTableDataSource(this.peers);
 
@@ -17,12 +21,14 @@ export class StatisticsService {
     private readonly allStats = [
         new PausableIntervalTask(async () => {
             const statisticsFrom = await this.ipfs.ipfs.stats.bw();
+            this.totalIn = this.bytesToReadable(statisticsFrom.totalIn);
+            this.totalOut = this.bytesToReadable(statisticsFrom.totalOut);
             this.statsBw = [
                 {
-                    key: 'incoming total', value: this.bytesToReadable(statisticsFrom.totalIn)
+                    key: 'incoming total', value: this.totalIn
                 },
                 {
-                    key: 'outgoing total', value: this.bytesToReadable(statisticsFrom.totalOut)
+                    key: 'outgoing total', value: this.totalOut
                 },
                 // {
                 //     key: 'incoming rate', value: this.bytesToReadable(statisticsFrom.rateIn) + '/s'
@@ -36,6 +42,9 @@ export class StatisticsService {
             const statisticsFrom = await this.ipfs.ipfs.swarm.peers();
             this.peers = statisticsFrom.map(p => p.addr.toString()).map(s => ({peer: s}));
             this.peersSource.data = this.peers;
+        }, 2000),
+        new PausableIntervalTask(async () => {
+            this.id = await this.ipfs.ipfs.id();
         }, 2000),
     ];
 

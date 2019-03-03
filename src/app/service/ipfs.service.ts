@@ -5,6 +5,7 @@ import { TreeNodeItem } from '../model/treeNodeItem.model';
 import { SettingsService } from './settings.service';
 import { ElectronService } from 'ngx-electron';
 import { JobsService, IpfsCatJob, IpfsLsJob } from './jobs.service';
+import { ToastService } from './toast.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +15,7 @@ export class IpfsService {
     constructor(
         private settings: SettingsService,
         private ngxElectron: ElectronService,
+        private toast: ToastService,
         private jobs: JobsService
     ) {
         console.log(this.ngxElectron);
@@ -191,6 +193,15 @@ export class IpfsService {
             } catch (e) {
                 console.log('unpinning unsuccessfull');
             }
+        }
+    }
+
+    public async connectPeer(peer: string) {
+        try {
+            await this.ipfs.swarm.connect(peer);
+            this.toast.notify('success', 'peer added: ' + peer, null);
+        } catch (error) {
+            this.toast.notify('error', 'bad input: ' + peer, error);
         }
     }
 }
