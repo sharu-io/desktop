@@ -13,11 +13,4 @@ export class StatisticsComponent {
 
     displayedColumnsBandWith: string[] = ['key', 'value'];
     displayedColumnsPeers: string[] = ['peer'];
-
-    panelState = new Map<string, boolean>();
-    toggle(panel: string, opened: boolean) {
-        console.log('toggle: ' + panel + opened);
-        this.panelState[panel] = opened;
-    }
-
 }

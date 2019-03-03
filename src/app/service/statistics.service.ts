@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material';
     providedIn: 'root'
 })
 export class StatisticsService {
+    panelState = new Map<string, boolean>();
 
     public statsBw = null;
     public totalIn = null;

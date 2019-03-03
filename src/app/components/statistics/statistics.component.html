@@ -25,7 +25,7 @@
                 </table>
             -->
     </mat-expansion-panel>
-    <mat-expansion-panel expanded="panelState['peer']" (afterExpand)="toggle('peer', true)" (afterCollapse)="toggle('peer', false)">
+    <mat-expansion-panel [expanded]="(stats.panelState['peer'])" (afterExpand)="stats.panelState['peer'] = true" (afterCollapse)="stats.panelState['peer'] = false">
         <mat-expansion-panel-header>
             <mat-panel-title>
                 Peers
