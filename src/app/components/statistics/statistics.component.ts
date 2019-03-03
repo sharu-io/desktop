@@ -9,6 +9,9 @@ import { IpfsService } from '../../service/ipfs.service';
     templateUrl: './statistics.component.html'
 })
 export class StatisticsComponent {
+    addPeerInput = '';
+
+
     constructor(public stats: StatisticsService, public ipfs: IpfsService) { }
 
     displayedColumnsBandWith: string[] = ['key', 'value'];

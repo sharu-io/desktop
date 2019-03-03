@@ -40,7 +40,7 @@
             </mat-form-field>
 
             <mat-form-field>
-                <input matInput (keydown.enter)="ipfs.connectPeer($event.target.value)" placeholder="Add Peer">
+                <input matInput [(ngModel)]="addPeerInput" (keydown.enter)="ipfs.connectPeer($event.target.value); addPeerInput = ''" placeholder="Add Peer">
             </mat-form-field>
         </div>
         <table mat-table [dataSource]="stats.peersSource">
