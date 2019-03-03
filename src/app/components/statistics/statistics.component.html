@@ -2,7 +2,7 @@
     <mat-expansion-panel hideToggle="true">
         <mat-expansion-panel-header>
             <mat-panel-title>
-                Traffic
+                IPFS traffic
             </mat-panel-title>
             <mat-panel-description>
                 Total In: {{stats.totalIn}} - Total Out: {{stats.totalOut}}
@@ -25,10 +25,32 @@
                 </table>
             -->
     </mat-expansion-panel>
-    <mat-expansion-panel [expanded]="(stats.panelState['peer'])" (afterExpand)="stats.panelState['peer'] = true" (afterCollapse)="stats.panelState['peer'] = false">
+    <mat-expansion-panel [expanded]="(stats.panelState['id'])" (afterExpand)="stats.panelState['id'] = true"
+        (afterCollapse)="stats.panelState['id'] = false">
         <mat-expansion-panel-header>
             <mat-panel-title>
-                Peers
+                IPFS node 
+            </mat-panel-title>
+            <mat-panel-description *ngIf="(stats.id)">
+                {{stats.id.id}}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        Announced as:<br />
+        <ul>
+            <ng-template *ngIf="(stats.id)" let-adr let-last="last" ngFor [ngForOf]="stats.id.addresses">
+                <li>
+                    {{adr}}
+                </li>
+            </ng-template>
+        </ul>
+
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="(stats.panelState['peer'])" (afterExpand)="stats.panelState['peer'] = true"
+        (afterCollapse)="stats.panelState['peer'] = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                IPFS peers
             </mat-panel-title>
             <mat-panel-description *ngIf="(stats.peers)">
                 PeerCount: {{ stats.peers.length }}
@@ -40,7 +62,8 @@
             </mat-form-field>
 
             <mat-form-field>
-                <input matInput [(ngModel)]="addPeerInput" (keydown.enter)="ipfs.connectPeer($event.target.value); addPeerInput = ''" placeholder="Add Peer">
+                <input matInput [(ngModel)]="addPeerInput" (keydown.enter)="ipfs.connectPeer($event.target.value); addPeerInput = ''"
+                    placeholder="Add Peer">
             </mat-form-field>
         </div>
         <table mat-table [dataSource]="stats.peersSource">

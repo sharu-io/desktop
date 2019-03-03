@@ -10,6 +10,7 @@ import { MatTableDataSource } from '@angular/material';
 export class StatisticsService {
     panelState = new Map<string, boolean>();
 
+    public id = null;
     public statsBw = null;
     public totalIn = null;
     public totalOut = null;
@@ -41,6 +42,9 @@ export class StatisticsService {
             const statisticsFrom = await this.ipfs.ipfs.swarm.peers();
             this.peers = statisticsFrom.map(p => p.addr.toString()).map(s => ({peer: s}));
             this.peersSource.data = this.peers;
+        }, 2000),
+        new PausableIntervalTask(async () => {
+            this.id = await this.ipfs.ipfs.id();
         }, 2000),
     ];
 
