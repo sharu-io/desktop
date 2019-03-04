@@ -15,6 +15,7 @@ export class StatisticsService {
     public totalIn = null;
     public totalOut = null;
     public peers = null;
+    public peerIps = null;
     public peersSource = new MatTableDataSource(this.peers);
 
     private runStatistics = false;
@@ -41,6 +42,7 @@ export class StatisticsService {
         new PausableIntervalTask(async () => {
             const statisticsFrom = await this.ipfs.ipfs.swarm.peers();
             this.peers = statisticsFrom.map(p => p.addr.toString()).map(s => ({peer: s}));
+            this.peerIps = this.peers.map(p => ({ ip: p.peer.split('/')[2], peer: p.peer }));
             this.peersSource.data = this.peers;
         }, 2000),
         new PausableIntervalTask(async () => {

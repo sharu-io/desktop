@@ -10,6 +10,8 @@ import { IpfsService } from '../../service/ipfs.service';
 })
 export class StatisticsComponent {
     addPeerInput = '';
+    public peerFilter = '';
+    public selectedPeer = null;
 
 
     constructor(public stats: StatisticsService, public ipfs: IpfsService) { }

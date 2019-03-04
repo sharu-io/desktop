@@ -1,77 +1,38 @@
-<mat-accordion multi="true">
-    <mat-expansion-panel hideToggle="true">
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                IPFS traffic
-            </mat-panel-title>
-            <mat-panel-description>
-                Total In: {{stats.totalIn}} - Total Out: {{stats.totalOut}}
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-        <!--
-                Note: rate-data seems not to be right...
-                <table mat-table [dataSource]="stats.statsBw" *ngIf="stats.statsBw">
-                    <ng-container matColumnDef="key">
-                        
-                        <th mat-header-cell *matHeaderCellDef> Key</th>
-                        <td mat-cell *matCellDef="let element"> {{element.key}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="value">
-                        <th mat-header-cell *matHeaderCellDef> Value</th>
-                        <td mat-cell style="text-align: right" *matCellDef="let element"> {{element.value}} </td>
-                    </ng-container>
-                    
-                    <tr mat-row *matRowDef="let row; columns: displayedColumnsBandWith;"></tr>
-                </table>
-            -->
-    </mat-expansion-panel>
-    <mat-expansion-panel [expanded]="(stats.panelState['id'])" (afterExpand)="stats.panelState['id'] = true"
-        (afterCollapse)="stats.panelState['id'] = false">
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                IPFS node 
-            </mat-panel-title>
-            <mat-panel-description *ngIf="(stats.id)">
-                {{stats.id.id}}
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-        Announced as:<br />
-        <ul>
-            <ng-template *ngIf="(stats.id)" let-adr let-last="last" ngFor [ngForOf]="stats.id.addresses">
-                <li>
-                    {{adr}}
-                </li>
-            </ng-template>
-        </ul>
+<mat-card *ngIf="(stats.id)">
+    <h2>{{stats.id.id}}</h2>
+    Announced as:<br />
+    <ul>
+        <ng-template *ngIf="(stats.id)" let-adr let-last="last" ngFor [ngForOf]="stats.id.addresses">
+            <li>
+                {{adr}}
+            </li>
+        </ng-template>
+    </ul>
+</mat-card>
 
-    </mat-expansion-panel>
+<mat-card>
+    Total In: <strong>{{stats.totalIn}}</strong> / Total Out: <strong>{{stats.totalOut}}</strong>
+</mat-card>
 
-    <mat-expansion-panel [expanded]="(stats.panelState['peer'])" (afterExpand)="stats.panelState['peer'] = true"
-        (afterCollapse)="stats.panelState['peer'] = false">
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                IPFS peers
-            </mat-panel-title>
-            <mat-panel-description *ngIf="(stats.peers)">
-                PeerCount: {{ stats.peers.length }}
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-        <div>
-            <mat-form-field>
-                <input matInput (keyup)="stats.applyFilterPeers($event.target.value)" placeholder="Filter">
-            </mat-form-field>
+<mat-card *ngIf="(stats.peers)">
+    <h2>{{ stats.peers.length }} Peers</h2>
+    <div>
+        <mat-form-field>
+            <input matInput (keyup)="peerFilter = $event.target.value" placeholder="Filter">
+        </mat-form-field>
 
-            <mat-form-field>
-                <input matInput [(ngModel)]="addPeerInput" (keydown.enter)="ipfs.connectPeer($event.target.value); addPeerInput = ''"
-                    placeholder="Add Peer">
-            </mat-form-field>
+        <mat-form-field>
+            <input matInput [(ngModel)]="addPeerInput"
+                (keydown.enter)="ipfs.connectPeer($event.target.value); addPeerInput = ''" placeholder="Add Peer">
+        </mat-form-field>
+
+        <i>Click on peer for more details.</i>
+    </div>
+    <mat-chip-list>
+        <div *ngFor="let element of stats.peerIps">
+            <mat-chip *ngIf="element.peer.indexOf(peerFilter) >= 0" (click)="selectedPeer = element">{{element.ip}}
+            </mat-chip>
         </div>
-        <table mat-table [dataSource]="stats.peersSource">
-            <ng-container matColumnDef="peer">
-                <th mat-header-cell *matHeaderCellDef>Peer</th>
-                <td mat-cell *matCellDef="let element"> {{element.peer}} </td>
-            </ng-container>
-            <tr mat-row *matRowDef="let row; columns: displayedColumnsPeers;"></tr>
-        </table>
-    </mat-expansion-panel>
-</mat-accordion>
+    </mat-chip-list>
+    <p *ngIf="(selectedPeer)">{{selectedPeer.peer}}</p>
+</mat-card>
