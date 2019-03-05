@@ -11,12 +11,15 @@ export class StatisticsService {
     private runStatistics = false;
 
     public id = null;
+
     public totalIn = null;
     public totalOut = null;
-    public peers = null;
-    public peerIps = null;
 
-    private runStatistics = false;
+    private peers: PeerInfo[] = null;
+    public filteredPeers: { id: string, addrs: string[] }[] = null;
+    public filterForPeers: string = null;
+    public selectedPeer: { id: string, addrs: string[] };
+
     private readonly allStats = [
         new PausableIntervalTask(async () => {
             const statisticsFrom = await this.ipfs.ipfs.stats.bw();
@@ -24,23 +27,54 @@ export class StatisticsService {
             this.totalOut = this.bytesToReadable(statisticsFrom.totalOut);
         }, 2000),
         new PausableIntervalTask(async () => {
-            const statisticsFrom = await this.ipfs.ipfs.swarm.peers();
-            this.peers = statisticsFrom.map(p => p.addr.toString()).map(s => ({peer: s}));
-            this.peerIps = this.peers.map(p => ({
-                ip: p.peer.split('/')[2],
-                peer: p.peer,
-                multiaddr: this.getShortedMultiAddress(p.peer.split('/')[6])
-            }));
-        }, 2000),
+            this.peers = await this.ipfs.ipfs.swarm.addrs();
+            await this.filterPeers();
+        }, 10000000),
         new PausableIntervalTask(async () => {
             this.id = await this.ipfs.ipfs.id();
-        }, 2000),
+        }, 2000)
     ];
 
-    private getShortedMultiAddress(multiaddr: string): string {
-        const length = 6;
-        const shorted = multiaddr.slice(0, length) + '...' + multiaddr.slice(multiaddr.length - length, multiaddr.length);
-        return shorted;
+    public async setFilterForPeers(filter: string) {
+        this.filterForPeers = filter;
+        await this.filterPeers();
+    }
+
+    private async filterPeers() {
+        const raw = await this.peers.map(async peer => await this.peerInfoToPrint(peer));
+        
+        if (!this.filterForPeers) {
+            this.filteredPeers = raw;
+        } else {
+            this.filteredPeers = raw.filter(r => {
+                if (r.id.includes(this.filterForPeers)) {
+                    return true;
+                }
+                for (let i = 0; i < r.addrs.length; i++) {
+                    const toCheck = r.addrs[i];
+                    console.log(toCheck);
+                    if (toCheck.toLowerCase().includes(this.filterForPeers)) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+                // r.id.includes(this.filterForPeers) ||
+                // (r.addrs.find(a => a.includes(this.filterForPeers))));
+            if (this.selectedPeer) {
+                if (!this.filteredPeers.find(f => f.id === this.selectedPeer.id)) {
+                    this.selectedPeer = null;
+                }
+            }
+        }
+
+    }
+    private async peerInfoToPrint(peer: PeerInfo): Promise<{ id: string, addrs: string[] }> {
+        const val = { id: await peer.id.toB58String(), addrs: [] };
+        peer.multiaddrs.forEach(async maddr => {
+            val.addrs.push(await maddr.toString());
+        });
+        return val;
     }
 
     constructor(

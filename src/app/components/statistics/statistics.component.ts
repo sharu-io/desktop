@@ -36,4 +36,9 @@ export class StatisticsComponent {
             this.findHash = null;
         }
     }
+    public getShortedMultiAddress(multiaddr: string): string {
+        const length = 6;
+        const shorted = multiaddr.slice(0, length) + '...' + multiaddr.slice(multiaddr.length - length, multiaddr.length);
+        return shorted;
+    }
 }
