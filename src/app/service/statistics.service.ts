@@ -59,8 +59,6 @@ export class StatisticsService {
                 }
                 return false;
             });
-                // r.id.includes(this.filterForPeers) ||
-                // (r.addrs.find(a => a.includes(this.filterForPeers))));
             if (this.selectedPeer) {
                 if (!this.filteredPeers.find(f => f.id === this.selectedPeer.id)) {
                     this.selectedPeer = null;
