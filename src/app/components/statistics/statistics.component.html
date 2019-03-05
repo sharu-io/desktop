@@ -1,52 +1,58 @@
-<mat-card *ngIf="(stats.id)">
+<mat-card>
     <h2>{{stats.id.id}}</h2>
-    Announced as:<br />
-    <ul>
-        <ng-template *ngIf="(stats.id)" let-adr let-last="last" ngFor [ngForOf]="stats.id.addresses">
-            <li>
-                {{adr}}
-            </li>
-        </ng-template>
-    </ul>
 </mat-card>
-
 <mat-card>
     Total In: <strong>{{stats.totalIn}}</strong> / Total Out: <strong>{{stats.totalOut}}</strong>
 </mat-card>
 
-<mat-card *ngIf="(stats.peers)">
-    <h2>{{ stats.peers.length }} Peers</h2>
-    <div>
-        <mat-form-field>
-            <input matInput (keyup)="peerFilter = $event.target.value" placeholder="Filter">
-        </mat-form-field>
-
-        <mat-form-field>
-            <input matInput [(ngModel)]="addPeerInput" (keydown.enter)="ipfs.connectPeer($event.target.value); addPeerInput = ''"
-                placeholder="Add Peer">
-        </mat-form-field>
-
-        <i>Click on peer for more details.</i>
-    </div>
-    <mat-chip-list>
-        <div *ngFor="let element of stats.peerIps">
-            <mat-chip *ngIf="element.peer.indexOf(peerFilter) >= 0" (click)="selectedPeer = element">{{element.ip}}
-            </mat-chip>
-        </div>
-    </mat-chip-list>
-    <p *ngIf="(selectedPeer)">{{selectedPeer.peer}}</p>
-</mat-card>
-<mat-card>
-    <h2>low level ipfs operations</h2>
-    <mat-form-field>
-        <input matInput [(ngModel)]="searchHash" (keydown.enter)="lookupHash($event.target.value); searchHash=''"
-            placeholder="Find hash">
-    </mat-form-field>
-    <div *ngIf="(findHash)">
-        <div *ngIf="!(findHash.result)">Looking for: {{findHash.search}}...</div>
-        <div *ngIf="(findHash.result)">Looked for: {{findHash.search}}</div>
-        <div *ngIf="(findHash.result)">
-            Result: {{findHash.result}}
-        </div>
-    </div>
-</mat-card>
+<mat-tab-group animationDuration="0ms">
+    <mat-tab label="General">
+        <mat-card *ngIf="(stats.id)">
+            Announced as:<br />
+            <ul>
+                <ng-template *ngIf="(stats.id)" let-adr let-last="last" ngFor [ngForOf]="stats.id.addresses">
+                    <li>
+                        {{adr}}
+                    </li>
+                </ng-template>
+            </ul>
+        </mat-card>
+        <mat-card *ngIf="(stats.peers)">
+            <h2>{{ stats.peers.length }} Peers</h2>
+            <div>
+                <mat-form-field>
+                    <input matInput (keyup)="peerFilter = $event.target.value" placeholder="Filter">
+                </mat-form-field>
+        
+                <mat-form-field>
+                    <input matInput [(ngModel)]="addPeerInput" (keydown.enter)="ipfs.connectPeer($event.target.value); addPeerInput = ''"
+                        placeholder="Add Peer">
+                </mat-form-field>
+        
+                <i>Click on peer for more details.</i>
+            </div>
+            <mat-chip-list>
+                <div *ngFor="let element of stats.peerIps">
+                    <mat-chip *ngIf="element.peer.indexOf(peerFilter) >= 0" (click)="selectedPeer = element">{{element.ip}}
+                    </mat-chip>
+                </div>
+            </mat-chip-list>
+            <p *ngIf="(selectedPeer)">{{selectedPeer.peer}}</p>
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Low level IPFS ops">
+        <mat-card>
+            <mat-form-field>
+                <input matInput [(ngModel)]="searchHash" (keydown.enter)="lookupHash($event.target.value); searchHash=''"
+                    placeholder="Find hash">
+            </mat-form-field>
+            <div *ngIf="(findHash)">
+                <div *ngIf="!(findHash.result)">Looking for: {{findHash.search}}...</div>
+                <div *ngIf="(findHash.result)">Looked for: {{findHash.search}}</div>
+                <div *ngIf="(findHash.result)">
+                    Result: {{findHash.result}}
+                </div>
+            </div>
+        </mat-card>
+    </mat-tab>
+</mat-tab-group>

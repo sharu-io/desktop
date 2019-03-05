@@ -44,6 +44,7 @@ import {
   MatAutocompleteModule,
   MatSnackBarModule,
   MatBadgeModule,
+  MatTabsModule,
   MatChipsModule
 } from '@angular/material';
 import { WalletComponent } from './components/wallet/wallet.component';
@@ -136,6 +137,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatChipsModule,
     AccordionModule,
     ToastModule,
+    MatTabsModule,
     AvatarModule.forRoot(),
     LocalStorageModule.withConfig({
       prefix: 'sharu',
