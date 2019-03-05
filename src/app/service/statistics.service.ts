@@ -11,12 +11,10 @@ export class StatisticsService {
     panelState = new Map<string, boolean>();
 
     public id = null;
-    public statsBw = null;
     public totalIn = null;
     public totalOut = null;
     public peers = null;
     public peerIps = null;
-    public peersSource = new MatTableDataSource(this.peers);
 
     private runStatistics = false;
     private readonly allStats = [
@@ -24,20 +22,6 @@ export class StatisticsService {
             const statisticsFrom = await this.ipfs.ipfs.stats.bw();
             this.totalIn = this.bytesToReadable(statisticsFrom.totalIn);
             this.totalOut = this.bytesToReadable(statisticsFrom.totalOut);
-            this.statsBw = [
-                {
-                    key: 'incoming total', value: this.totalIn
-                },
-                {
-                    key: 'outgoing total', value: this.totalOut
-                },
-                // {
-                //     key: 'incoming rate', value: this.bytesToReadable(statisticsFrom.rateIn) + '/s'
-                // },
-                // {
-                //     key: 'outgoing rate', value: this.bytesToReadable(statisticsFrom.rateOut) + '/s'
-                // }
-            ];
         }, 2000),
         new PausableIntervalTask(async () => {
             const statisticsFrom = await this.ipfs.ipfs.swarm.peers();
@@ -47,7 +31,6 @@ export class StatisticsService {
                 peer: p.peer,
                 multiaddr: this.getShortedMultiAddress(p.peer.split('/')[6])
             }));
-            this.peersSource.data = this.peers;
         }, 2000),
         new PausableIntervalTask(async () => {
             this.id = await this.ipfs.ipfs.id();
@@ -76,10 +59,6 @@ export class StatisticsService {
                 }
             }
         });
-    }
-
-    public applyFilterPeers(filterValue: string) {
-        this.peersSource.filter = filterValue.trim().toLowerCase();
     }
 
     private bytesToReadable(incoming) {
