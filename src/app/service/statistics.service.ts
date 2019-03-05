@@ -42,13 +42,23 @@ export class StatisticsService {
         new PausableIntervalTask(async () => {
             const statisticsFrom = await this.ipfs.ipfs.swarm.peers();
             this.peers = statisticsFrom.map(p => p.addr.toString()).map(s => ({peer: s}));
-            this.peerIps = this.peers.map(p => ({ ip: p.peer.split('/')[2], peer: p.peer }));
+            this.peerIps = this.peers.map(p => ({
+                ip: p.peer.split('/')[2],
+                peer: p.peer,
+                multiaddr: this.getShortedMultiAddress(p.peer.split('/')[6])
+            }));
             this.peersSource.data = this.peers;
         }, 2000),
         new PausableIntervalTask(async () => {
             this.id = await this.ipfs.ipfs.id();
         }, 2000),
     ];
+
+    private getShortedMultiAddress(multiaddr: string): string {
+        const length = 6;
+        const shorted = multiaddr.slice(0, length) + '...' + multiaddr.slice(multiaddr.length - length, multiaddr.length);
+        return shorted;
+    }
 
     constructor(
         private ipfs: IpfsService,
