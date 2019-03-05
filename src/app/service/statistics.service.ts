@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { IpfsService } from './ipfs.service';
 import { SidebarService } from './sidebar.service';
 import { PausableIntervalTask } from '../util/pausableIntervalTask';
-import { MatTableDataSource } from '@angular/material';
+import { PeerInfo } from 'peer-info';
 
 @Injectable({
     providedIn: 'root'
