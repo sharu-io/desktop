@@ -22,8 +22,8 @@
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput [(ngModel)]="addPeerInput"
-                (keydown.enter)="ipfs.connectPeer($event.target.value); addPeerInput = ''" placeholder="Add Peer">
+            <input matInput [(ngModel)]="addPeerInput" (keydown.enter)="ipfs.connectPeer($event.target.value); addPeerInput = ''"
+                placeholder="Add Peer">
         </mat-form-field>
 
         <i>Click on peer for more details.</i>
@@ -35,4 +35,18 @@
         </div>
     </mat-chip-list>
     <p *ngIf="(selectedPeer)">{{selectedPeer.peer}}</p>
+</mat-card>
+<mat-card>
+    <h2>low level ipfs operations</h2>
+    <mat-form-field>
+        <input matInput [(ngModel)]="searchHash" (keydown.enter)="lookupHash($event.target.value); searchHash=''"
+            placeholder="Find hash">
+    </mat-form-field>
+    <div *ngIf="(findHash)">
+        <div *ngIf="!(findHash.result)">Looking for: {{findHash.search}}...</div>
+        <div *ngIf="(findHash.result)">Looked for: {{findHash.search}}</div>
+        <div *ngIf="(findHash.result)">
+            Result: {{findHash.result}}
+        </div>
+    </div>
 </mat-card>
