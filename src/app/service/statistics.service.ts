@@ -41,8 +41,8 @@ export class StatisticsService {
     }
 
     private async filterPeers() {
-        const raw = await this.peers.map(async peer => await this.peerInfoToPrint(peer));
-        
+        const rawProm = this.peers.map(async peer => this.peerInfoToPrint(peer));
+        const raw = await Promise.all(rawProm);
         if (!this.filterForPeers) {
             this.filteredPeers = raw;
         } else {
