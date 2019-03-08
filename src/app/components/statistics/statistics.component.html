@@ -17,27 +17,38 @@
         </mat-card>
     </mat-tab>
     <mat-tab label="peers">
-        <mat-card *ngIf="(stats.peers)">
-            <h2>{{ stats.peers.length }} Peers</h2>
+        <mat-card *ngIf="(peers)">
+            <h2>{{ peers.length }} Peers</h2>
             <div>
                 <mat-form-field>
-                    <input matInput (keyup)="peerFilter = $event.target.value" placeholder="Filter">
+                    <input matInput (keyup)="setFilterForPeers($event.target.value)" placeholder="Filter">
                 </mat-form-field>
-        
+
                 <mat-form-field>
                     <input matInput [(ngModel)]="addPeerInput" (keydown.enter)="ipfs.connectPeer($event.target.value); addPeerInput = ''"
                         placeholder="Add Peer">
                 </mat-form-field>
-        
+
                 <i>Click on peer for more details.</i>
             </div>
             <mat-chip-list>
-                <div *ngFor="let element of stats.peerIps">
-                    <mat-chip *ngIf="element.peer.indexOf(peerFilter) >= 0" (click)="selectedPeer = element">{{element.multiaddr}}
+                <div *ngFor="let peer of filteredPeers">
+                    <mat-chip (click)="selectedPeer = peer">{{getShortedMultiAddress(peer.id)}}
                     </mat-chip>
                 </div>
             </mat-chip-list>
-            <p *ngIf="(selectedPeer)">{{selectedPeer.peer}}</p>
+            <div *ngIf="(selectedPeer)">
+                <div>ID: {{selectedPeer.id}}</div>
+                <div>
+                    <ul>
+                        Announced as:
+                        {{selectedPeer.addrs.length}}
+                        <li *ngFor="let addr of selectedPeer.addrs">
+                            {{addr}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </mat-card>
     </mat-tab>
     <mat-tab label="low level ops">
