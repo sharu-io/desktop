@@ -3,6 +3,7 @@ import { IpfsService } from './ipfs.service';
 import { SidebarService } from './sidebar.service';
 import { PausableIntervalTask } from '../util/pausableIntervalTask';
 import { PeerInfo } from 'peer-info';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -15,10 +16,7 @@ export class StatisticsService {
     public totalIn = null;
     public totalOut = null;
 
-    private peers: PeerInfo[] = null;
-    public filteredPeers: { id: string, addrs: string[] }[] = null;
-    public filterForPeers: string = null;
-    public selectedPeer: { id: string, addrs: string[] };
+    public peersSubject: BehaviorSubject<{ id: string, addrs: string[] }[]> = new BehaviorSubject<{ id: string, addrs: string[] }[]>(null);
 
     private readonly allStats = [
         new PausableIntervalTask(async () => {
@@ -27,53 +25,19 @@ export class StatisticsService {
             this.totalOut = this.bytesToReadable(statisticsFrom.totalOut);
         }, 2000),
         new PausableIntervalTask(async () => {
-            this.peers = await this.ipfs.ipfs.swarm.addrs();
-            await this.filterPeers();
-        }, 10000000),
+            this.peersSubject.next(
+                (await this.ipfs.ipfs.swarm.addrs()).map(peer => {
+                    return {
+                        id: peer.id.toB58String(), addrs: peer.multiaddrs.toArray().map(a => a.toString())
+                    };
+                })
+            );
+        }, 5000),
         new PausableIntervalTask(async () => {
             this.id = await this.ipfs.ipfs.id();
         }, 2000)
     ];
 
-    public async setFilterForPeers(filter: string) {
-        this.filterForPeers = filter;
-        await this.filterPeers();
-    }
-
-    private async filterPeers() {
-        const rawProm = this.peers.map(async peer => this.peerInfoToPrint(peer));
-        const raw = await Promise.all(rawProm);
-        if (!this.filterForPeers) {
-            this.filteredPeers = raw;
-        } else {
-            this.filteredPeers = raw.filter(r => {
-                if (r.id.includes(this.filterForPeers)) {
-                    return true;
-                }
-                for (let i = 0; i < r.addrs.length; i++) {
-                    const toCheck = r.addrs[i];
-                    console.log(toCheck);
-                    if (toCheck.toLowerCase().includes(this.filterForPeers)) {
-                        return true;
-                    }
-                }
-                return false;
-            });
-            if (this.selectedPeer) {
-                if (!this.filteredPeers.find(f => f.id === this.selectedPeer.id)) {
-                    this.selectedPeer = null;
-                }
-            }
-        }
-
-    }
-    private async peerInfoToPrint(peer: PeerInfo): Promise<{ id: string, addrs: string[] }> {
-        const val = { id: await peer.id.toB58String(), addrs: [] };
-        peer.multiaddrs.forEach(async maddr => {
-            val.addrs.push(await maddr.toString());
-        });
-        return val;
-    }
 
     constructor(
         private ipfs: IpfsService,
