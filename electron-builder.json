@@ -28,7 +28,7 @@
   },
   "mac": {
     "asar": { "smartUnpack": true },
-    "icon": "dist/assets",
+    "icon": "dist/assets/sharu.icns",
     "target": [
       "dmg"
     ]
