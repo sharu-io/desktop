@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { IpfsService } from './ipfs.service';
 import { SidebarService } from './sidebar.service';
 import { PausableIntervalTask } from '../util/pausableIntervalTask';
-import { PeerInfo } from 'peer-info';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({

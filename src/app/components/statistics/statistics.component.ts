@@ -62,7 +62,6 @@ export class StatisticsComponent {
                 }
                 for (let i = 0; i < r.addrs.length; i++) {
                     const toCheck = r.addrs[i];
-                    console.log(toCheck);
                     if (toCheck.toLowerCase().includes(this.filterForPeers.toLowerCase())) {
                         return true;
                     }
