@@ -17,6 +17,16 @@
         </mat-card>
     </mat-tab>
     <mat-tab label="peers">
+        <mat-card *ngIf="!(peers)">
+            <div>
+                no peers fetched so war, 
+                <button *ngIf="!stats.fetchingPeers" mat-button (click)="stats.fetchPeers()">
+                        DO IT!
+                    </button>
+                    <span *ngIf="stats.fetchingPeers">updating peers...</span>
+    
+            </div>
+        </mat-card>
         <mat-card *ngIf="(peers)">
             <h2>{{ peers.length }} Peers</h2>
             <div>
@@ -28,6 +38,11 @@
                     <input matInput [(ngModel)]="addPeerInput" (keydown.enter)="ipfs.connectPeer($event.target.value); addPeerInput = ''"
                         placeholder="Add Peer">
                 </mat-form-field>
+
+                <button *ngIf="!stats.fetchingPeers" mat-button (click)="stats.fetchPeers()">
+                    update peers
+                </button>
+                <span *ngIf="stats.fetchingPeers">updating peers...</span>
 
                 <i>Click on peer for more details.</i>
             </div>

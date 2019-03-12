@@ -15,6 +15,7 @@ export class StatisticsService {
     public totalIn = null;
     public totalOut = null;
 
+    public fetchingPeers: boolean; // undefined: uninited
     public peersSubject: BehaviorSubject<{ id: string, addrs: string[] }[]> = new BehaviorSubject<{ id: string, addrs: string[] }[]>(null);
 
     private readonly allStats = [
@@ -23,15 +24,15 @@ export class StatisticsService {
             this.totalIn = this.bytesToReadable(statisticsFrom.totalIn);
             this.totalOut = this.bytesToReadable(statisticsFrom.totalOut);
         }, 2000),
-        new PausableIntervalTask(async () => {
-            this.peersSubject.next(
-                (await this.ipfs.ipfs.swarm.addrs()).map(peer => {
-                    return {
-                        id: peer.id.toB58String(), addrs: peer.multiaddrs.toArray().map(a => a.toString())
-                    };
-                })
-            );
-        }, 5000),
+        // new PausableIntervalTask(async () => {
+            // this.peersSubject.next(
+            //     (await this.ipfs.ipfs.swarm.addrs()).map(peer => {
+            //         return {
+            //             id: peer.id.toB58String(), addrs: peer.multiaddrs.toArray().map(a => a.toString())
+            //         };
+            //     })
+            // );
+        // }, 5000),
         new PausableIntervalTask(async () => {
             this.id = await this.ipfs.ipfs.id();
         }, 2000)
@@ -45,6 +46,9 @@ export class StatisticsService {
         sidebar.topic.subscribe(async whatToShow => {
             const start = (whatToShow === 'statistics');
             if (start) {
+                // if (this.fetchingPeers === undefined) {
+                //     this.fetchPeers();
+                // }
                 this.runStatistics = true;
                 this.allStats.forEach(f => f.start());
             } else {
@@ -54,6 +58,28 @@ export class StatisticsService {
                 }
             }
         });
+    }
+
+    public async fetchPeers() {
+        if (!this.fetchingPeers) {
+            this.fetchingPeers = true;
+            this.peersSubject.next(await this.getSwarmAddrs());
+            this.fetchingPeers = false;
+        }
+    }
+
+    private async getSwarmAddrs(): Promise<{ id: string, addrs: string[] }[]> {
+
+        console.log('fetching from server');
+        const fromServer = await this.ipfs.ipfs.swarm.addrs();
+        console.log('fetched from server');
+        const val = fromServer.map(peer => {
+            return {
+                id: peer.id.toB58String(), addrs: peer.multiaddrs.toArray().map(a => a.toString())
+            };
+        });
+        console.log('transformed');
+        return val;
     }
 
     private bytesToReadable(incoming) {
