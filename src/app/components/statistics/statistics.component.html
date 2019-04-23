@@ -19,7 +19,7 @@
     <mat-tab label="peers">
         <mat-card *ngIf="!(peers)">
             <div>
-                no peers fetched so war, 
+                no peers fetched so far, 
                 <button *ngIf="!stats.fetchingPeers" mat-button (click)="stats.fetchPeers()">
                         DO IT!
                     </button>
