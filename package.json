@@ -1,6 +1,6 @@
 {
   "name": "sharu",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "description": "fully decentralized, post-cloud, unstoppable, censorfree, trustless, anonymous filesharing",
   "homepage": "https://sharu.io",
   "author": {
@@ -56,7 +56,7 @@
     "ethers": "^4.0.15",
     "git-describe": "^4.0.3",
     "ipfsd-ctl": "^0.42.0",
-    "js-ipfs-dep": "0.1.5",
+    "js-ipfs-dep": "0.1.6",
     "ng2-avatar": "^2.3.1",
     "ngx-electron": "^2.0.0",
     "node-forge": "^0.7.6",
