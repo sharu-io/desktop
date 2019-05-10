@@ -55,9 +55,8 @@
             <div *ngIf="(selectedPeer)">
                 <div>ID: {{selectedPeer.id}}</div>
                 <div>
+                    Announced as:
                     <ul>
-                        Announced as:
-                        {{selectedPeer.addrs.length}}
                         <li *ngFor="let addr of selectedPeer.addrs">
                             {{addr}}
                         </li>
