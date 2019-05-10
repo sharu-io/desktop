@@ -57,6 +57,7 @@
     "git-describe": "^4.0.3",
     "ipfsd-ctl": "^0.42.0",
     "js-ipfs-dep": "0.1.6",
+    "go-ipfs-dep": "^0.4.20",
     "ng2-avatar": "^2.3.1",
     "ngx-electron": "^2.0.0",
     "node-forge": "^0.7.6",
