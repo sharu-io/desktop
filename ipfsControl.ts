@@ -8,7 +8,7 @@ import { createCipheriv, createDecipheriv } from 'crypto';
 import * as assert from 'assert';
 import { Go, JsDep, IpfsImplementation } from './src/app/util/ipfsFlavours';
 
-const ipfsImplementation: IpfsImplementation = new JsDep;
+const ipfsImplementation: IpfsImplementation = new Go;
 
 let ipfsd = null;
 let ipfsApi = null;
