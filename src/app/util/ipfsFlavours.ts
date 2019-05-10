@@ -1,7 +1,7 @@
 export interface IpfsImplementation {
     ipfsFactory: string;
     Addresses: { Swarm: string[], API: string, Gateway: string};
-    BootStrap: string[];
+    Bootstrap: string[];
 }
 export class JsDep implements IpfsImplementation {
     ipfsFactory = 'jsdep';
@@ -13,7 +13,7 @@ export class JsDep implements IpfsImplementation {
         'API': '/ip4/127.0.0.1/tcp/5002',
         'Gateway': '/ip4/127.0.0.1/tcp/9090'
     };
-    BootStrap = [
+    Bootstrap = [
         '/ip4/213.165.80.135/tcp/4001/ipfs/QmXPiBKHQ31s33n6F9cUWYjdGSFs5nAzxBPoq6NqnrR1uj',
         '/ip4/104.236.176.52/tcp/4001/ipfs/QmSoLnSGccFuZQJzRadHn95W2CrSFmZuTdDWP8HXaHca9z',
         '/ip4/104.131.131.82/tcp/4001/ipfs/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ',
@@ -48,7 +48,7 @@ export class Go implements IpfsImplementation {
         'API': '/ip4/127.0.0.1/tcp/5001',
         'Gateway': '/ip4/127.0.0.1/tcp/8080'
     };
-    BootStrap =  [
+    Bootstrap =  [
         '/dnsaddr/bootstrap.libp2p.io/ipfs/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN',
         '/dnsaddr/bootstrap.libp2p.io/ipfs/QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa',
         '/dnsaddr/bootstrap.libp2p.io/ipfs/QmbLHAnMoJPWSCR5Zhtx6BHJX9KiKNN6tpvbUcqanj75Nb',

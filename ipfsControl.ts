@@ -272,7 +272,7 @@ const CUSTOM_BOOTSTRAP_FILE = 'customBootstrapAdditions.json';
 export function generateIpfsConfig(forcedPath?: string) {
     const stdConfig = {
         'Addresses': ipfsImplementation.Addresses,
-        'Bootstrap': ipfsImplementation.BootStrap,
+        'Bootstrap': ipfsImplementation.Bootstrap,
         'API': {
             'HTTPHeaders':
             {
