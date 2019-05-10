@@ -248,7 +248,7 @@ export async function download(filePath, symKey, iv, authTag, hash) {
                 console.log(`Download decipher error ${err}`);
                 reject(err);
             });
-            
+
             const output = createWriteStream(filePath);
             output.on('error', (err) => {
                 console.log(`File system writing error ${err}`);
@@ -316,7 +316,7 @@ export function generateIpfsConfig(forcedPath?: string) {
 
     const custom = getCustomBootStrapAdditions(forcedPath);
     custom.Bootstrap.forEach(peer => {
-        if (!stdConfig.Bootstrap.includes(peer)){
+        if (!stdConfig.Bootstrap.includes(peer)) {
             stdConfig.Bootstrap.push(peer);
         }
     });
