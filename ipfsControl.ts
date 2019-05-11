@@ -287,6 +287,7 @@ export function generateIpfsConfig(forcedPath?: string) {
                 ]
             }
         },
+        'Swarm': ipfsImplementation.Swarm,
     };
 
     const custom = getCustomBootStrapAdditions(forcedPath);
