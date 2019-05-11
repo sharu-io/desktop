@@ -70,4 +70,27 @@ export class Go implements IpfsImplementation {
         '/ip6/2604:a880:800:10::4a:5001/tcp/4001/ipfs/QmSoLV4Bbm51jM9C4gDYZQ9Cy3U6aXMJDAbzgu2fzaDs64',
         '/ip6/2a03:b0c0:0:1010::23:1001/tcp/4001/ipfs/QmSoLer265NRgSp2LA3dPaeykiS1J6DifTC88f5uVQKNAd'
       ];
+    Swarm = {
+        'AddrFilters': null,
+        'ConnMgr': {
+          'GracePeriod': '20s',
+          'HighWater': 900,
+          'LowWater': 600,
+          'Type': 'basic'
+        },
+        'DisableBandwidthMetrics': false,
+        'DisableNatPortMap': false,
+        'DisableRelay': false,
+        'EnableAutoNATService': false,
+        /*
+         this is false in default config!
+         see
+          https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#swarm0
+         and
+          https://github.com/ipfs/go-ipfs/blob/master/docs/experimental-features.md#autorelay
+         this should help
+        */
+        'EnableAutoRelay': true,
+      };
+
 }
